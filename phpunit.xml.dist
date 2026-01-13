@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory suffix="Test.php">tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <!-- Example Langfuse credentials for integration tests -->
+        <env name="LANGFUSE_PUBLIC_KEY" value="pk-lf-placeholder"/>
+        <env name="LANGFUSE_SECRET_KEY" value="sk-lf-placeholder"/>
+        <env name="LANGFUSE_HOST" value="https://cloud.langfuse.com"/>
+        <env name="LANGFUSE_DEBUG" value="true"/>
+        <env name="LANGFUSE_TRACING_ENABLED" value="true"/>
+        <env name="LANGFUSE_TRACING_ENVIRONMENT" value="testing"/>
+        <env name="LANGFUSE_SAMPLE_RATE" value="1.0"/>
+        <!-- OTEL endpoint -->
+        <env name="LANGFUSE_OTEL_ENDPOINT" value="https://cloud.langfuse.com/api/public/otel"/>
+        <env name="LANGFUSE_OTEL_PROTOCOL" value="http/protobuf"/>
+    </php>
+    <coverage>
+        <report>
+            <html outputDirectory="coverage"/>
+            <text outputFile="php://stdout"/>
+        </report>
+    </coverage>
+</phpunit>
