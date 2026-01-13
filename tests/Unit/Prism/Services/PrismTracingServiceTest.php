@@ -208,8 +208,14 @@ class PrismTracingServiceTest extends TestCase
             ->andReturn([]);
 
         $span = Mockery::mock(SpanInterface::class);
-        // When model is unknown, update should not be called for model
-        $span->shouldReceive('update')->never();
+        // Update is always called, but with null model when provider/model is unknown
+        $span->shouldReceive('update')
+            ->once()
+            ->withArgs(function ($model) {
+                // Model should be null when unknown
+                return $model === null;
+            })
+            ->andReturnSelf();
 
         $this->langfuse->shouldReceive('startSpan')
             ->withArgs(function ($name) {

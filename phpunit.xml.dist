@@ -31,6 +31,8 @@
         <env name="LANGFUSE_TRACING_ENABLED" value="true"/>
         <env name="LANGFUSE_TRACING_ENVIRONMENT" value="testing"/>
         <env name="LANGFUSE_SAMPLE_RATE" value="1.0"/>
+        <!-- Disable OTEL by default for tests to prevent connection errors -->
+        <env name="LANGFUSE_OTEL_ENABLED" value="false"/>
         <!-- OTEL endpoint -->
         <env name="LANGFUSE_OTEL_ENDPOINT" value="https://cloud.langfuse.com/api/public/otel"/>
         <env name="LANGFUSE_OTEL_PROTOCOL" value="http/protobuf"/>
