@@ -28,6 +28,11 @@ class TracingIntegrationTest extends TestCase
     {
         parent::setUp();
         
+        // Skip if using placeholder credentials
+        if (str_contains(env('LANGFUSE_PUBLIC_KEY', ''), 'placeholder')) {
+            $this->markTestSkipped('Skipping integration test due to placeholder credentials');
+        }
+
         // Use real services from the container
         $this->langfuse = $this->app->make(LangfuseClientInterface::class);
         $this->tracer = $this->app->make(TracerInterface::class);

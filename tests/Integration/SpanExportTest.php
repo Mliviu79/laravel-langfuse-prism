@@ -18,6 +18,16 @@ use Langfuse\Tests\TestCase;
  */
 class SpanExportTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Skip if using placeholder credentials
+        if (str_contains(env('LANGFUSE_PUBLIC_KEY', ''), 'placeholder')) {
+            $this->markTestSkipped('Skipping integration test due to placeholder credentials');
+        }
+    }
+
     /**
      * @group integration
      */

@@ -41,6 +41,7 @@ class ApiClientIntegrationTest extends TestCase
         $publicKey = env('LANGFUSE_PUBLIC_KEY', '');
         $this->hasValidCredentials = !empty($publicKey) 
             && str_starts_with($publicKey, 'pk-lf-')
+            && !str_contains($publicKey, 'placeholder')
             && strlen($publicKey) > 10;
     }
     
