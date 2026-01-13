@@ -44,6 +44,7 @@ abstract class TestCase extends OrchestraTestCase
             'tracing_enabled' => filter_var(env('LANGFUSE_TRACING_ENABLED', true), FILTER_VALIDATE_BOOLEAN),
             'environment' => env('LANGFUSE_TRACING_ENVIRONMENT', 'testing'),
             'sample_rate' => (float) env('LANGFUSE_SAMPLE_RATE', 1.0),
+            'otel_enabled' => filter_var(env('LANGFUSE_OTEL_ENABLED', true), FILTER_VALIDATE_BOOLEAN),
             'otel_endpoint' => env('LANGFUSE_OTEL_ENDPOINT', 'https://cloud.langfuse.com/api/public/otel'),
             'otel_protocol' => env('LANGFUSE_OTEL_PROTOCOL', 'http/protobuf'),
             'prism' => [
