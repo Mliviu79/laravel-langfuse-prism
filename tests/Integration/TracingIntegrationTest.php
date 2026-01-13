@@ -21,8 +21,8 @@ use Langfuse\Tests\TestCase;
  */
 class TracingIntegrationTest extends TestCase
 {
-    private LangfuseClientInterface $langfuse;
-    private TracerInterface $tracer;
+    private ?LangfuseClientInterface $langfuse = null;
+    private ?TracerInterface $tracer = null;
 
     protected function setUp(): void
     {
@@ -41,7 +41,9 @@ class TracingIntegrationTest extends TestCase
     protected function tearDown(): void
     {
         // Ensure all spans are flushed
-        $this->langfuse->flush();
+        if ($this->langfuse) {
+            $this->langfuse->flush();
+        }
         parent::tearDown();
     }
 

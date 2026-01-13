@@ -29,12 +29,17 @@ use Mockery;
  */
 class PrismIntegrationTest extends TestCase
 {
-    private LangfuseClientInterface $langfuse;
-    private PrismTracingService $tracingService;
+    private ?LangfuseClientInterface $langfuse = null;
+    private ?PrismTracingService $tracingService = null;
 
     protected function setUp(): void
     {
         parent::setUp();
+        
+        // Skip if using placeholder credentials
+        if (str_contains(env('LANGFUSE_PUBLIC_KEY', ''), 'placeholder')) {
+            $this->markTestSkipped('Skipping integration test due to placeholder credentials');
+        }
         
         $this->langfuse = $this->app->make(LangfuseClientInterface::class);
         
@@ -53,7 +58,9 @@ class PrismIntegrationTest extends TestCase
     protected function tearDown(): void
     {
         Mockery::close();
-        $this->langfuse->flush();
+        if ($this->langfuse) {
+            $this->langfuse->flush();
+        }
         parent::tearDown();
     }
 
