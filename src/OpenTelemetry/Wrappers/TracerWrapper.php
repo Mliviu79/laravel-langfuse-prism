@@ -15,7 +15,7 @@ use Langfuse\Support\Contracts\IdGeneratorInterface;
 use Langfuse\Support\Enums\ObservationType;
 use Langfuse\Support\Enums\SpanLevel;
 use OpenTelemetry\Context\Context;
-use OpenTelemetry\SDK\Trace\TracerProvider;
+use OpenTelemetry\SDK\Trace\TracerProviderInterface;
 
 /**
  * Wrapper around OpenTelemetry tracer that provides Langfuse-specific functionality
@@ -23,7 +23,7 @@ use OpenTelemetry\SDK\Trace\TracerProvider;
 class TracerWrapper implements TracerInterface
 {
     public function __construct(
-        private readonly TracerProvider $tracerProvider,
+        private readonly TracerProviderInterface $tracerProvider,
         private readonly SpanManagerInterface $spanManager,
         private readonly ParentResolverService $parentResolver,
         private readonly AttributeMapperService $attributeMapper,

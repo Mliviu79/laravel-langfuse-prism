@@ -178,16 +178,14 @@ class DocumentProcessor implements MediaProcessorInterface
             $lines = str_getcsv($content, "\n");
             $metadata['rowCount'] = count($lines);
 
-            if (!empty($lines)) {
-                $firstRow = str_getcsv($lines[0]);
-                $metadata['columnCount'] = count($firstRow);
+            $firstRow = str_getcsv($lines[0]);
+            $metadata['columnCount'] = count($firstRow);
 
-                // Detect delimiter
-                $metadata['delimiter'] = $this->detectCsvDelimiter($content);
+            // Detect delimiter
+            $metadata['delimiter'] = $this->detectCsvDelimiter($content);
 
-                // Check if first row might be headers
-                $metadata['hasHeaders'] = $this->likelyHasHeaders($firstRow);
-            }
+            // Check if first row might be headers
+            $metadata['hasHeaders'] = $this->likelyHasHeaders($firstRow);
         } catch (\Throwable $e) {
             $metadata['error'] = $e->getMessage();
         }

@@ -26,8 +26,7 @@ class PrismRequestExtractor implements PrismRequestExtractorInterface
     public function extract(
         PrismRequest|TextRequest|StructuredRequest|EmbeddingsRequest|ImagesRequest|ModerationRequest|TextToSpeechRequest|SpeechToTextRequest $request
     ): PrismRequestDto {
-        $hasProviderOptions = method_exists($request, 'providerOptions');
-        $providerOptions = $hasProviderOptions ? $request->providerOptions() : [];
+        $providerOptions = $request->providerOptions();
         $langfuseOptions = $providerOptions['langfuse'] ?? [];
 
         return new PrismRequestDto(
@@ -92,11 +91,7 @@ class PrismRequestExtractor implements PrismRequestExtractorInterface
                     return $message->toArray();
                 }
 
-                if (is_object($message)) {
-                    return (array) $message;
-                }
-
-                return $message;
+                return (array) $message;
             }, $messages);
         }
 
@@ -128,16 +123,8 @@ class PrismRequestExtractor implements PrismRequestExtractorInterface
         $combined = [];
 
         foreach ($systemPrompts as $prompt) {
-            if ($prompt instanceof SystemMessage) {
-                // SystemMessage has a public readonly property, not a method
-                $combined[] = $prompt->content;
-            } elseif (is_object($prompt) && property_exists($prompt, 'content')) {
-                $combined[] = $prompt->content;
-            } elseif (is_object($prompt) && method_exists($prompt, 'content')) {
-                $combined[] = $prompt->content();
-            } elseif (is_string($prompt)) {
-                $combined[] = $prompt;
-            }
+            // SystemMessage has a public readonly property, not a method
+            $combined[] = $prompt->content;
         }
 
         return implode("\n\n", $combined);
@@ -184,7 +171,7 @@ class PrismRequestExtractor implements PrismRequestExtractorInterface
         }
 
         // ImagesRequest
-        if ($request instanceof ImagesRequest && method_exists($request, 'prompt')) {
+        if ($request instanceof ImagesRequest) {
             $additional['prompt'] = $request->prompt();
         }
 

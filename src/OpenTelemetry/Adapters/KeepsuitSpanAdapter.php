@@ -299,12 +299,16 @@ class KeepsuitSpanAdapter implements SpanInterface
         );
     }
 
+    /**
+     * @return 0|1|2|3|4
+     */
     private function mapObservationTypeToSpanKind(ObservationType $type): int
     {
         return match ($type) {
-            ObservationType::GENERATION => \OpenTelemetry\API\Trace\SpanKind::KIND_CLIENT,
-            ObservationType::SPAN => \OpenTelemetry\API\Trace\SpanKind::KIND_INTERNAL,
-            ObservationType::EVENT => \OpenTelemetry\API\Trace\SpanKind::KIND_INTERNAL,
+            ObservationType::GENERATION,
+            ObservationType::EMBEDDING,
+            ObservationType::RETRIEVER => \OpenTelemetry\API\Trace\SpanKind::KIND_CLIENT,
+            default => \OpenTelemetry\API\Trace\SpanKind::KIND_INTERNAL,
         };
     }
 }

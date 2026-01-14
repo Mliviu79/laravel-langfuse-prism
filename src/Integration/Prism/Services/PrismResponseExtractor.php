@@ -66,9 +66,6 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
             }
 
             $lastMessage = $messages->last();
-            if ($lastMessage === null) {
-                return null;
-            }
 
             if (method_exists($lastMessage, 'toArray')) {
                 return $lastMessage->toArray();
@@ -90,8 +87,8 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
 
             return $response->steps->map(function ($step) {
                 return [
-                    'text' => $step->text ?? null,
-                    'finish_reason' => $step->finishReason?->value ?? null,
+                    'text' => $step->text,
+                    'finish_reason' => $step->finishReason->value,
                 ];
             })->all();
         }
@@ -137,7 +134,10 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
         );
     }
 
-    private function extractCost(mixed $response): ?PrismCostDto
+    /**
+     * @return null
+     */
+    private function extractCost(mixed $response)
     {
         // Cost information is typically not available in Prism responses directly
         // It would need to be calculated from usage and model pricing
@@ -152,20 +152,16 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
         if ($response instanceof TextResponse) {
             $metadata['finish_reason'] = $response->finishReason->value;
 
-            if (property_exists($response, 'meta') && $response->meta !== null) {
-                $metadata['request_id'] = $response->meta->id ?? null;
-                $metadata['model'] = $response->meta->model ?? null;
-            }
+            $metadata['request_id'] = $response->meta->id;
+            $metadata['model'] = $response->meta->model;
         }
 
         // StructuredResponse also has these
         if ($response instanceof StructuredResponse) {
             $metadata['finish_reason'] = $response->finishReason->value;
 
-            if (property_exists($response, 'meta') && $response->meta !== null) {
-                $metadata['request_id'] = $response->meta->id ?? null;
-                $metadata['model'] = $response->meta->model ?? null;
-            }
+            $metadata['request_id'] = $response->meta->id;
+            $metadata['model'] = $response->meta->model;
         }
 
         // ModerationResponse has flagged info
@@ -186,8 +182,8 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
             if (!empty($response->toolCalls)) {
                 $additional['tool_calls'] = array_map(function ($toolCall) {
                     return [
-                        'name' => $toolCall->name ?? null,
-                        'arguments' => $toolCall->arguments() ?? null,
+                        'name' => $toolCall->name,
+                        'arguments' => $toolCall->arguments(),
                     ];
                 }, $response->toolCalls);
             }
@@ -195,8 +191,8 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
             if (!empty($response->toolResults)) {
                 $additional['tool_results'] = array_map(function ($toolResult) {
                     return [
-                        'name' => $toolResult->toolName ?? null,
-                        'result' => $toolResult->result ?? null,
+                        'name' => $toolResult->toolName,
+                        'result' => $toolResult->result,
                     ];
                 }, $response->toolResults);
             }
@@ -207,8 +203,8 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
         }
 
         // StructuredResponse has structured object
-        if ($response instanceof StructuredResponse && property_exists($response, 'object')) {
-            $additional['structured_output'] = $response->object ?? null;
+        if ($response instanceof StructuredResponse) {
+            $additional['structured_output'] = $response->structured;
         }
 
         // EmbeddingsResponse

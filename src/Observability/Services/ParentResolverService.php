@@ -8,7 +8,7 @@ use Langfuse\Observability\Contracts\SpanInterface;
 use Langfuse\Observability\Contracts\SpanManagerInterface;
 use OpenTelemetry\API\Trace\Span;
 use OpenTelemetry\API\Trace\SpanInterface as OtelSpanInterface;
-use OpenTelemetry\Context\Context;
+use OpenTelemetry\Context\ContextInterface;
 
 /**
  * Service for resolving parent spans
@@ -24,10 +24,10 @@ class ParentResolverService
      * Resolve parent span information
      *
      * @param string|null $parentId Explicit parent ID
-     * @param Context $currentContext Current OpenTelemetry context
-     * @return array{parentObservationId: string|null, isLangfuseRoot: bool, otelParentContext: Context|null}
+     * @param ContextInterface $currentContext Current OpenTelemetry context
+     * @return array{parentObservationId: string|null, isLangfuseRoot: bool, otelParentContext: ContextInterface|null}
      */
-    public function resolveParent(?string $parentId, Context $currentContext): array
+    public function resolveParent(?string $parentId, ContextInterface $currentContext): array
     {
         $parentObservationId = null;
         $isLangfuseRoot = true;

@@ -332,26 +332,33 @@ class PrismIntegrationTest extends TestCase
         int $completionTokens,
         string $finishReason
     ): object {
-        $finishReasonObj = Mockery::mock();
-        $finishReasonObj->value = $finishReason;
+        $finishReasonEnum = \Prism\Prism\Enums\FinishReason::tryFrom($finishReason) ?? \Prism\Prism\Enums\FinishReason::Stop;
+        $usage = new \Prism\Prism\ValueObjects\Usage($promptTokens, $completionTokens);
+        $meta = new \Prism\Prism\ValueObjects\Meta('id-123', 'model-xyz');
 
-        $usage = Mockery::mock(\Prism\Prism\ValueObjects\Usage::class);
-        $usage->promptTokens = $promptTokens;
-        $usage->completionTokens = $completionTokens;
-        $usage->thoughtTokens = null;
+        $step = new \Prism\Prism\Text\Step(
+            text: $text,
+            finishReason: $finishReasonEnum,
+            toolCalls: [],
+            toolResults: [],
+            providerToolCalls: [],
+            usage: $usage,
+            meta: $meta,
+            messages: [],
+            systemPrompts: []
+        );
 
-        $response = Mockery::mock(\Prism\Prism\Text\Response::class);
-        $response->text = $text;
-        $response->messages = new \Illuminate\Support\Collection([]);
-        $response->steps = new \Illuminate\Support\Collection([]);
-        $response->finishReason = $finishReasonObj;
-        $response->usage = $usage;
-        $response->toolCalls = [];
-        $response->toolResults = [];
-        $response->additionalContent = [];
-        $response->meta = null;
-
-        return $response;
+        return new \Prism\Prism\Text\Response(
+            steps: collect([$step]),
+            text: $text,
+            finishReason: $finishReasonEnum,
+            toolCalls: [],
+            toolResults: [],
+            usage: $usage,
+            meta: $meta,
+            messages: collect([]),
+            additionalContent: []
+        );
     }
 
     private function createMockTextResponseWithTools(
@@ -361,33 +368,41 @@ class PrismIntegrationTest extends TestCase
         int $completionTokens,
         string $finishReason
     ): object {
-        $finishReasonObj = Mockery::mock();
-        $finishReasonObj->value = $finishReason;
+        $finishReasonEnum = \Prism\Prism\Enums\FinishReason::tryFrom($finishReason) ?? \Prism\Prism\Enums\FinishReason::ToolCalls;
+        $usage = new \Prism\Prism\ValueObjects\Usage($promptTokens, $completionTokens);
+        $meta = new \Prism\Prism\ValueObjects\Meta('id-123', 'model-xyz');
 
-        $usage = Mockery::mock(\Prism\Prism\ValueObjects\Usage::class);
-        $usage->promptTokens = $promptTokens;
-        $usage->completionTokens = $completionTokens;
-        $usage->thoughtTokens = null;
-
-        $mockToolCalls = array_map(function ($tc) {
-            $mock = Mockery::mock();
-            $mock->name = $tc['name'];
-            $mock->shouldReceive('arguments')->andReturn($tc['arguments']);
-            return $mock;
+        $realToolCalls = array_map(function ($tc) {
+            return new \Prism\Prism\ValueObjects\ToolCall(
+                id: 'call_' . uniqid(),
+                name: $tc['name'],
+                arguments: $tc['arguments']
+            );
         }, $toolCalls);
 
-        $response = Mockery::mock(\Prism\Prism\Text\Response::class);
-        $response->text = $text;
-        $response->messages = new \Illuminate\Support\Collection([]);
-        $response->steps = new \Illuminate\Support\Collection([]);
-        $response->finishReason = $finishReasonObj;
-        $response->usage = $usage;
-        $response->toolCalls = $mockToolCalls;
-        $response->toolResults = [];
-        $response->additionalContent = [];
-        $response->meta = null;
+        $step = new \Prism\Prism\Text\Step(
+            text: $text,
+            finishReason: $finishReasonEnum,
+            toolCalls: $realToolCalls,
+            toolResults: [],
+            providerToolCalls: [],
+            usage: $usage,
+            meta: $meta,
+            messages: [],
+            systemPrompts: []
+        );
 
-        return $response;
+        return new \Prism\Prism\Text\Response(
+            steps: collect([$step]),
+            text: $text,
+            finishReason: $finishReasonEnum,
+            toolCalls: $realToolCalls,
+            toolResults: [],
+            usage: $usage,
+            meta: $meta,
+            messages: collect([]),
+            additionalContent: []
+        );
     }
 
     private function createMockStructuredRequest(
@@ -414,23 +429,33 @@ class PrismIntegrationTest extends TestCase
         int $completionTokens,
         string $finishReason
     ): object {
-        $finishReasonObj = Mockery::mock();
-        $finishReasonObj->value = $finishReason;
+        $finishReasonEnum = \Prism\Prism\Enums\FinishReason::tryFrom($finishReason) ?? \Prism\Prism\Enums\FinishReason::Stop;
+        $usage = new \Prism\Prism\ValueObjects\Usage($promptTokens, $completionTokens);
+        $meta = new \Prism\Prism\ValueObjects\Meta('id-123', 'model-xyz');
 
-        $usage = Mockery::mock(\Prism\Prism\ValueObjects\Usage::class);
-        $usage->promptTokens = $promptTokens;
-        $usage->completionTokens = $completionTokens;
-        $usage->thoughtTokens = null;
+        $step = new \Prism\Prism\Text\Step(
+            text: $text,
+            finishReason: $finishReasonEnum,
+            toolCalls: [],
+            toolResults: [],
+            providerToolCalls: [],
+            usage: $usage,
+            meta: $meta,
+            messages: [],
+            systemPrompts: []
+        );
 
-        $response = Mockery::mock(\Prism\Prism\Structured\Response::class);
-        $response->text = $text;
-        $response->steps = new \Illuminate\Support\Collection([]);
-        $response->finishReason = $finishReasonObj;
-        $response->usage = $usage;
-        $response->object = $structuredOutput;
-        $response->meta = null;
-
-        return $response;
+        return new \Prism\Prism\Structured\Response(
+            steps: collect([$step]),
+            text: $text,
+            structured: $structuredOutput,
+            finishReason: $finishReasonEnum,
+            usage: $usage,
+            meta: $meta,
+            toolCalls: [],
+            toolResults: [],
+            additionalContent: []
+        );
     }
 
     private function createMockEmbeddingsRequest(
@@ -450,14 +475,13 @@ class PrismIntegrationTest extends TestCase
         int $embeddingsCount,
         int $totalTokens
     ): object {
-        $usage = Mockery::mock();
-        $usage->tokens = $totalTokens;
+        $embeddings = array_fill(0, $embeddingsCount, new \Prism\Prism\ValueObjects\Embedding([0.1, 0.2, 0.3], 0));
 
-        $response = Mockery::mock(\Prism\Prism\Embeddings\Response::class);
-        $response->embeddings = array_fill(0, $embeddingsCount, [0.1, 0.2, 0.3]);
-        $response->usage = $usage;
-
-        return $response;
+        return new \Prism\Prism\Embeddings\Response(
+            embeddings: $embeddings,
+            usage: new \Prism\Prism\ValueObjects\EmbeddingsUsage($totalTokens),
+            meta: new \Prism\Prism\ValueObjects\Meta('id-123', 'model-xyz')
+        );
     }
 
     private function createMockModerationRequest(
@@ -476,11 +500,12 @@ class PrismIntegrationTest extends TestCase
         bool $flagged,
         int $resultsCount
     ): object {
-        $response = Mockery::mock(\Prism\Prism\Moderation\Response::class);
-        $response->results = array_fill(0, $resultsCount, ['flagged' => $flagged]);
-        $response->shouldReceive('isFlagged')->andReturn($flagged);
-        $response->shouldReceive('flagged')->andReturn($flagged ? [0] : []);
-        return $response;
+        $results = array_fill(0, $resultsCount, new \Prism\Prism\ValueObjects\ModerationResult($flagged, [], []));
+
+        return new \Prism\Prism\Moderation\Response(
+            results: $results,
+            meta: new \Prism\Prism\ValueObjects\Meta('id-123', 'model-xyz')
+        );
     }
 
     private function assertStringContains(string $needle, string $haystack): void

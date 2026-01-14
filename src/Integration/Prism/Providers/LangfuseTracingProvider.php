@@ -20,7 +20,9 @@ use Prism\Prism\Moderation\Response as ModerationResponse;
 use Prism\Prism\Providers\Provider;
 use Prism\Prism\Structured\Request as StructuredRequest;
 use Prism\Prism\Structured\Response as StructuredResponse;
-use Prism\Prism\Text\Chunk;
+use Prism\Prism\Streaming\Events\StreamEndEvent;
+use Prism\Prism\Streaming\Events\StreamEvent;
+use Prism\Prism\Streaming\Events\TextDeltaEvent;
 use Prism\Prism\Text\Request as TextRequest;
 use Prism\Prism\Text\Response as TextResponse;
 use Throwable;
@@ -204,7 +206,7 @@ class LangfuseTracingProvider extends Provider
     }
 
     /**
-     * @return Generator<Chunk>
+     * @return Generator<StreamEvent>
      */
     public function stream(TextRequest $request): Generator
     {
@@ -221,8 +223,11 @@ class LangfuseTracingProvider extends Provider
 
         try {
             foreach ($this->provider->stream($request) as $chunk) {
-                $aggregatedText .= $chunk->text;
-                if ($chunk->usage) {
+                if ($chunk instanceof TextDeltaEvent) {
+                    $aggregatedText .= $chunk->delta;
+                }
+
+                if ($chunk instanceof StreamEndEvent && $chunk->usage) {
                     $aggregatedUsage = $chunk->usage;
                 }
                 yield $chunk;
@@ -241,7 +246,7 @@ class LangfuseTracingProvider extends Provider
                     'unit' => 'TOKENS',
                 ];
 
-                if (isset($aggregatedUsage->thoughtTokens) && $aggregatedUsage->thoughtTokens !== null) {
+                if (isset($aggregatedUsage->thoughtTokens)) {
                     $usageDetails['reasoning'] = $aggregatedUsage->thoughtTokens;
                 }
 
