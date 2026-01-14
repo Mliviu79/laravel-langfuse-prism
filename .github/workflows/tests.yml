@@ -47,4 +47,9 @@ jobs:
         run: vendor/bin/phpunit --no-coverage
 
       - name: Static Analysis
-        run: vendor/bin/phpstan analyse
+        run: |
+          if [ "${{ matrix.laravel }}" = "10.*" ]; then
+            vendor/bin/phpstan analyse --configuration=phpstan.neon --exclude-paths src/Integration/Prism/* --exclude-paths tests/Integration/PrismIntegrationTest.php --exclude-paths tests/Unit/Prism/*
+          else
+            vendor/bin/phpstan analyse
+          fi
