@@ -315,9 +315,9 @@ class PrismIntegrationTest extends TestCase
         string $prompt,
         string $systemPrompt
     ): object {
-        // SystemMessage has a public readonly property, not a method
-        $systemMessage = Mockery::mock(\Prism\Prism\ValueObjects\Messages\SystemMessage::class);
-        $systemMessage->content = $systemPrompt;
+        // SystemMessage has a public readonly property, so we instantiate it directly
+        // instead of mocking it, to avoid PHPStan read-only property assignment errors.
+        $systemMessage = new \Prism\Prism\ValueObjects\Messages\SystemMessage($systemPrompt);
 
         $request = Mockery::mock(\Prism\Prism\Text\Request::class);
         $request->shouldReceive('provider')->andReturn($provider);
@@ -438,16 +438,17 @@ class PrismIntegrationTest extends TestCase
         $usage = new \Prism\Prism\ValueObjects\Usage($promptTokens, $completionTokens);
         $meta = new \Prism\Prism\ValueObjects\Meta('id-123', 'model-xyz');
 
-        $step = new \Prism\Prism\Text\Step(
+        $step = new \Prism\Prism\Structured\Step(
             text: $text,
             finishReason: $finishReasonEnum,
-            toolCalls: [],
-            toolResults: [],
-            providerToolCalls: [],
             usage: $usage,
             meta: $meta,
             messages: [],
-            systemPrompts: []
+            systemPrompts: [],
+            additionalContent: [],
+            structured: $structuredOutput,
+            toolCalls: [],
+            toolResults: []
         );
 
         return new \Prism\Prism\Structured\Response(
@@ -480,7 +481,7 @@ class PrismIntegrationTest extends TestCase
         int $embeddingsCount,
         int $totalTokens
     ): object {
-        $embeddings = array_fill(0, $embeddingsCount, new \Prism\Prism\ValueObjects\Embedding([0.1, 0.2, 0.3], 0));
+        $embeddings = array_fill(0, $embeddingsCount, new \Prism\Prism\ValueObjects\Embedding([0.1, 0.2, 0.3]));
 
         return new \Prism\Prism\Embeddings\Response(
             embeddings: $embeddings,
