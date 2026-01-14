@@ -37,6 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer remove orchestra/testbench --dev --no-interaction --no-update || true
+          if [ "${{ matrix.laravel }}" = "10.*" ]; then composer remove prism-php/prism --dev --no-interaction --no-update; fi
           composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
