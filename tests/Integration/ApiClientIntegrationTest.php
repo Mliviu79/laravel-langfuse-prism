@@ -58,6 +58,8 @@ class ApiClientIntegrationTest extends TestCase
      */
     public function test_create_score_via_api(): void
     {
+        $this->skipIfNoCredentials();
+
         // First create a span to get a valid trace ID
         $span = $this->langfuse->startSpan(
             name: 'api-test-score-creation',
@@ -90,6 +92,8 @@ class ApiClientIntegrationTest extends TestCase
      */
     public function test_create_numeric_score(): void
     {
+        $this->skipIfNoCredentials();
+
         $span = $this->langfuse->startSpan(name: 'api-test-numeric-score');
         $traceId = $span->getTraceId();
         $span->end();
@@ -111,6 +115,8 @@ class ApiClientIntegrationTest extends TestCase
      */
     public function test_create_boolean_score(): void
     {
+        $this->skipIfNoCredentials();
+
         $span = $this->langfuse->startSpan(name: 'api-test-boolean-score');
         $traceId = $span->getTraceId();
         $span->end();
@@ -132,6 +138,8 @@ class ApiClientIntegrationTest extends TestCase
      */
     public function test_create_categorical_score(): void
     {
+        $this->skipIfNoCredentials();
+
         $span = $this->langfuse->startSpan(name: 'api-test-categorical-score');
         $traceId = $span->getTraceId();
         $span->end();
@@ -320,6 +328,8 @@ class ApiClientIntegrationTest extends TestCase
      */
     public function test_multiple_scores_for_same_trace(): void
     {
+        $this->skipIfNoCredentials();
+
         $span = $this->langfuse->startSpan(name: 'api-test-multiple-scores');
         $traceId = $span->getTraceId();
         $span->end();
@@ -345,6 +355,8 @@ class ApiClientIntegrationTest extends TestCase
      */
     public function test_api_client_handles_errors_gracefully(): void
     {
+        $this->skipIfNoCredentials();
+
         // Try to get a non-existent dataset
         $dataset = $this->langfuse->getDataset('non-existent-dataset-12345');
 

@@ -14,6 +14,7 @@ use OpenTelemetry\SDK\Resource\ResourceInfoFactory;
 use OpenTelemetry\SDK\Trace\SpanProcessor\BatchSpanProcessor;
 use OpenTelemetry\SDK\Trace\SpanProcessor\SimpleSpanProcessor;
 use OpenTelemetry\SDK\Trace\TracerProvider;
+use OpenTelemetry\SDK\Trace\TracerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -27,7 +28,7 @@ class TracerProviderFactory implements TracerProviderFactoryInterface
     ) {
     }
 
-    public function create(OpenTelemetryConfigDto $config, ?LoggerInterface $logger = null): TracerProvider
+    public function create(OpenTelemetryConfigDto $config, ?LoggerInterface $logger = null): TracerProviderInterface
     {
         $logger = $logger ?? new NullLogger();
 

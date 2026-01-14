@@ -136,15 +136,15 @@ class LangfuseServiceProvider extends ServiceProvider
                 return new \Langfuse\Observability\Spans\NullTracer($idGenerator);
             }
 
-            // Check for Keepsuit Laravel OpenTelemetry package - use it if available
-            // This allows Langfuse to integrate with existing OTEL infrastructure
-            if (class_exists('Keepsuit\LaravelOpenTelemetry\Facades\Tracer')) {
-                return new \Langfuse\OpenTelemetry\Adapters\KeepsuitTracerAdapter($idGenerator);
-            }
-
             // Check if our OTEL is explicitly disabled
             if ($app->make('config')->get('langfuse.otel_enabled') === false) {
                 return new \Langfuse\Observability\Spans\NullTracer($idGenerator);
+            }
+
+            // Check for Keepsuit Laravel OpenTelemetry package - use it if available
+            // This allows Langfuse to integrate with existing OTEL infrastructure
+            if (class_exists('Keepsuit\LaravelOpenTelemetry\Facades\Tracer') && $app->make('config')->get('langfuse.integrations.keepsuit_enabled', true)) {
+                return new \Langfuse\OpenTelemetry\Adapters\KeepsuitTracerAdapter($idGenerator);
             }
 
             // Use lazy tracer wrapper to defer OTEL initialization

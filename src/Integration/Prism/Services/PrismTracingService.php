@@ -131,8 +131,7 @@ class PrismTracingService
         // Add additional response metadata
         $responseMetadata = $this->metadataExtractor->extractFromResponse($response);
         if (!empty($responseMetadata)) {
-            $existingMetadata = $updateData['metadata'] ?? [];
-            $updateData['metadata'] = array_merge($existingMetadata, $responseMetadata);
+            $updateData['metadata'] = $responseMetadata;
         }
 
         $span->update(...$updateData);

@@ -1,0 +1,22 @@
+includes:
+    - vendor/phpstan/phpstan-mockery/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+        - config
+        - tests
+    ignoreErrors:
+        - '#Trait Langfuse\\Support\\Traits\\GeneratesIds is used zero times#'
+        - '#Property Langfuse\\Client\\LangfuseClient::\$config is never read, only written.#'
+        - '#Property Langfuse\\Client\\LangfuseClient::\$apiClient is never read, only written.#'
+        - '#Call to function method_exists\(\) with Illuminate\\Foundation\\Application and .runningInConsole. will always evaluate to true.#'
+        - '#Parameter .* expects .*, Mockery\\MockInterface given.#'
+        - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true will always evaluate to true.#'
+        - '#Property Langfuse\\Tests\\.* is never read, only written.#'
+        - '#Readonly property .* is assigned outside of its declaring class.#'
+        - '#Property .* does not accept .*#'
+        - '#Access to an undefined property .*Mockery\\MockInterface.*::.*#'
+        - '#Method .* is unused.#'
+        - '#Call to method PHPUnit\\Framework\\Assert::assertNotNull\(\) with .* will always evaluate to true.#'

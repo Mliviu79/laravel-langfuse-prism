@@ -120,12 +120,16 @@ class KeepsuitTracerAdapter implements TracerInterface
         // Keepsuit handles shutdown
     }
 
+    /**
+     * @return 0|1|2|3|4
+     */
     private function mapObservationTypeToSpanKind(ObservationType $type): int
     {
         return match ($type) {
-            ObservationType::GENERATION => SpanKind::KIND_CLIENT,
-            ObservationType::SPAN => SpanKind::KIND_INTERNAL,
-            ObservationType::EVENT => SpanKind::KIND_INTERNAL,
+            ObservationType::GENERATION,
+            ObservationType::EMBEDDING,
+            ObservationType::RETRIEVER => SpanKind::KIND_CLIENT,
+            default => SpanKind::KIND_INTERNAL,
         };
     }
 }

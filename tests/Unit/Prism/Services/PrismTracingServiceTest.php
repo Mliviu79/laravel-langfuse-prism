@@ -147,7 +147,17 @@ class PrismTracingServiceTest extends TestCase
 
     public function test_update_with_success_sets_output_and_usage(): void
     {
-        $response = Mockery::mock(\Prism\Prism\Text\Response::class);
+        // Use real Response object as it is readonly and cannot be mocked by Mockery < 2.0 (or with issues)
+        $response = new \Prism\Prism\Text\Response(
+            steps: collect([]),
+            text: 'Response text',
+            finishReason: \Prism\Prism\Enums\FinishReason::Stop,
+            toolCalls: [],
+            toolResults: [],
+            usage: new \Prism\Prism\ValueObjects\Usage(50, 100),
+            meta: new \Prism\Prism\ValueObjects\Meta('id', 'model'),
+            messages: collect([])
+        );
         $startTime = new DateTime();
 
         $responseDto = new PrismResponseDto(

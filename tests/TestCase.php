@@ -21,9 +21,15 @@ abstract class TestCase extends OrchestraTestCase
      */
     protected function getPackageProviders($app): array
     {
-        return [
+        $providers = [
             LangfuseServiceProvider::class,
         ];
+
+        if (class_exists(\Keepsuit\LaravelOpenTelemetry\LaravelOpenTelemetryServiceProvider::class)) {
+            $providers[] = \Keepsuit\LaravelOpenTelemetry\LaravelOpenTelemetryServiceProvider::class;
+        }
+
+        return $providers;
     }
 
     /**
@@ -52,6 +58,9 @@ abstract class TestCase extends OrchestraTestCase
                 'trace_model_params' => true,
                 'trace_usage' => true,
                 'trace_cost' => true,
+            ],
+            'integrations' => [
+                'keepsuit_enabled' => false,
             ],
         ]);
     }

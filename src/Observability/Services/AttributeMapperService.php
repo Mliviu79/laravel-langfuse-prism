@@ -14,6 +14,8 @@ class AttributeMapperService
 {
     /**
      * Map ObservationType to OpenTelemetry SpanKind
+     *
+     * @return 0|1|2|3|4
      */
     public function mapObservationTypeToSpanKind(ObservationType $type): int
     {

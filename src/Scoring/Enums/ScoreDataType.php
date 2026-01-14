@@ -37,7 +37,7 @@ enum ScoreDataType: string
     /**
      * Convert a value to the appropriate type for this score data type
      */
-    public function castValue(mixed $value): float|int|bool|string
+    public function castValue(mixed $value): float|bool|string
     {
         return match ($this) {
             self::NUMERIC => is_float($value) ? $value : (float) $value,
