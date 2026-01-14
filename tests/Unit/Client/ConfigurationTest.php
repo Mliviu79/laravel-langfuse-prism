@@ -119,7 +119,7 @@ class ConfigurationTest extends TestCase
         $headers = $config->getAuthHeaders();
 
         $this->assertArrayHasKey('Authorization', $headers);
-        $this->assertEquals('Basic ' . base64_encode('public:secret'), $headers['Authorization']);
+        $this->assertEquals('Basic '.base64_encode('public:secret'), $headers['Authorization']);
         $this->assertEquals('application/json', $headers['Content-Type']);
         $this->assertStringContainsString('langfuse-php/', $headers['User-Agent']);
     }
@@ -146,7 +146,7 @@ class ConfigurationTest extends TestCase
             secretKey: 'test',
             sampleRate: 0.0
         );
-        
+
         // Test multiple times to ensure consistency
         for ($i = 0; $i < 10; $i++) {
             $this->assertFalse($config->shouldSample());
@@ -160,7 +160,7 @@ class ConfigurationTest extends TestCase
             secretKey: 'test',
             sampleRate: 1.0
         );
-        
+
         // Test multiple times to ensure consistency
         for ($i = 0; $i < 10; $i++) {
             $this->assertTrue($config->shouldSample());

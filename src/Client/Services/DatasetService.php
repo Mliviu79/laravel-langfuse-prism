@@ -18,8 +18,7 @@ class DatasetService
     public function __construct(
         private readonly ApiClientInterface $apiClient,
         private readonly IdGeneratorInterface $idGenerator
-    ) {
-    }
+    ) {}
 
     /**
      * Create a dataset

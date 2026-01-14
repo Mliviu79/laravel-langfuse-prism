@@ -18,8 +18,7 @@ class StatusReportService
     public function __construct(
         private readonly Configuration $config,
         private readonly ConfigurationFactory $configFactory
-    ) {
-    }
+    ) {}
 
     /**
      * Generate a status report for the current configuration.
@@ -32,8 +31,8 @@ class StatusReportService
             tracingEnabled: $this->config->tracingEnabled,
             environment: $this->config->environment,
             sampleRate: $this->config->sampleRate,
-            hasPublicKey: !empty($this->config->publicKey),
-            hasSecretKey: !empty($this->config->secretKey),
+            hasPublicKey: ! empty($this->config->publicKey),
+            hasSecretKey: ! empty($this->config->secretKey),
             otelConfig: $otelConfig,
             phpSapi: php_sapi_name() ?: 'unknown',
             runningInConsole: $this->isRunningInConsole(),
@@ -66,9 +65,9 @@ class StatusReportService
             $warnings[] = 'Missing credentials! Set LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY';
         }
 
-        if (!$otelConfig->useSimpleProcessor && $this->isRunningInConsole()) {
-            $warnings[] = 'Running in CLI mode but BatchProcessor is active. ' .
-                'Spans may be lost if process terminates before export. ' .
+        if (! $otelConfig->useSimpleProcessor && $this->isRunningInConsole()) {
+            $warnings[] = 'Running in CLI mode but BatchProcessor is active. '.
+                'Spans may be lost if process terminates before export. '.
                 'SimpleProcessor should auto-activate for CLI/queue jobs.';
         }
 

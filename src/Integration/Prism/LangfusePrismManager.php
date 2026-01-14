@@ -13,19 +13,20 @@ use Prism\Prism\Providers\Provider;
 
 /**
  * Decorator for PrismManager that wraps all providers with Langfuse tracing.
- * 
+ *
  * Uses lazy loading for dependencies to avoid circular resolution issues
  * with Laravel's container extend() mechanism.
  */
 class LangfusePrismManager extends PrismManager
 {
     private ?LangfuseClientInterface $resolvedLangfuse = null;
+
     private ?PrismTracingService $resolvedTracingService = null;
 
     /**
-     * @param PrismManager $originalManager The original PrismManager instance
-     * @param Closure $langfuseResolver Lazy resolver for LangfuseClientInterface
-     * @param Closure $tracingServiceResolver Lazy resolver for PrismTracingService
+     * @param  PrismManager  $originalManager  The original PrismManager instance
+     * @param  Closure  $langfuseResolver  Lazy resolver for LangfuseClientInterface
+     * @param  Closure  $tracingServiceResolver  Lazy resolver for PrismTracingService
      */
     public function __construct(
         private readonly PrismManager $originalManager,
@@ -62,6 +63,7 @@ class LangfusePrismManager extends PrismManager
         if ($this->resolvedLangfuse === null) {
             $this->resolvedLangfuse = ($this->langfuseResolver)();
         }
+
         return $this->resolvedLangfuse;
     }
 
@@ -73,6 +75,7 @@ class LangfusePrismManager extends PrismManager
         if ($this->resolvedTracingService === null) {
             $this->resolvedTracingService = ($this->tracingServiceResolver)();
         }
+
         return $this->resolvedTracingService;
     }
 
@@ -88,6 +91,7 @@ class LangfusePrismManager extends PrismManager
     public function extend(string $name, Closure $callback): static
     {
         $this->originalManager->extend($name, $callback);
+
         return $this;
     }
 

@@ -18,17 +18,17 @@ class HttpRequestService
         private readonly Configuration $config,
         private readonly HttpClientFactory $httpClient,
         private readonly DataSanitizationService $sanitizationService
-    ) {
-    }
+    ) {}
 
     /**
      * Execute an HTTP request
      *
-     * @param string $method HTTP method
-     * @param string $url Request URL
-     * @param array $data Request data
-     * @param array $query Query parameters
+     * @param  string  $method  HTTP method
+     * @param  string  $url  Request URL
+     * @param  array  $data  Request data
+     * @param  array  $query  Query parameters
      * @return Response HTTP response
+     *
      * @throws ApiException
      */
     public function execute(string $method, string $url, array $data = [], array $query = []): Response
@@ -46,7 +46,7 @@ class HttpRequestService
             ->withHeaders($this->config->getAllHeaders())
             ->timeout($this->config->timeout);
 
-        if (!empty($query)) {
+        if (! empty($query)) {
             $client = $client->withQueryParameters($query);
         }
 

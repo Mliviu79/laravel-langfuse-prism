@@ -19,8 +19,7 @@ readonly class TraceRequest
         public ?array $metadata = null,
         public ?array $tags = null,
         public ?bool $public = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

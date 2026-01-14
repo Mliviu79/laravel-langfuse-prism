@@ -19,7 +19,7 @@ class DocumentProcessor implements MediaProcessorInterface
 
     public function process(mixed $content, MediaContentType $contentType): array
     {
-        if (!is_string($content)) {
+        if (! is_string($content)) {
             throw new \InvalidArgumentException('Document content must be a string');
         }
 
@@ -149,13 +149,13 @@ class DocumentProcessor implements MediaProcessorInterface
 
                 // Get namespace information
                 $namespaces = $xml->getNamespaces(true);
-                if (!empty($namespaces)) {
+                if (! empty($namespaces)) {
                     $metadata['namespaces'] = array_keys($namespaces);
                 }
             } else {
                 $metadata['valid'] = false;
                 $errors = libxml_get_errors();
-                $metadata['errors'] = array_map(fn($error) => $error->message, $errors);
+                $metadata['errors'] = array_map(fn ($error) => $error->message, $errors);
             }
 
             libxml_clear_errors();
@@ -198,7 +198,7 @@ class DocumentProcessor implements MediaProcessorInterface
      */
     private function getArrayDepth(mixed $array): int
     {
-        if (!is_array($array)) {
+        if (! is_array($array)) {
             return 0;
         }
 

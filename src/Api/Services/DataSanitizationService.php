@@ -14,7 +14,7 @@ class DataSanitizationService
      */
     public function sanitize(mixed $data): mixed
     {
-        if (!is_array($data) && !is_string($data)) {
+        if (! is_array($data) && ! is_string($data)) {
             return $data;
         }
 
@@ -39,12 +39,14 @@ class DataSanitizationService
 
                 if ($shouldRedact) {
                     $sanitized[$key] = '[REDACTED]';
+
                     continue;
                 }
             }
 
             if (is_array($value)) {
                 $sanitized[$key] = $this->sanitize($value);
+
                 continue;
             }
 

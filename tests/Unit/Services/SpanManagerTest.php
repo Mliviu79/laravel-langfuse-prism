@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Langfuse\Tests\Unit\Services;
 
-use Langfuse\Observability\Contracts\SpanInterface;
 use Langfuse\Observability\Services\SpanManager;
 use Langfuse\Observability\Spans\NullSpan;
 use PHPUnit\Framework\TestCase;
@@ -16,12 +15,12 @@ class SpanManagerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->manager = new SpanManager();
+        $this->manager = new SpanManager;
     }
 
-    public function testRegisterAndGetSpan(): void
+    public function test_register_and_get_span(): void
     {
-        $span = new NullSpan();
+        $span = new NullSpan;
         $spanId = 'test-span-id';
 
         $this->manager->registerSpan($spanId, $span);
@@ -30,14 +29,14 @@ class SpanManagerTest extends TestCase
         $this->assertSame($span, $this->manager->getSpan($spanId));
     }
 
-    public function testGetSpanReturnsNullForNonExistentSpan(): void
+    public function test_get_span_returns_null_for_non_existent_span(): void
     {
         $this->assertNull($this->manager->getSpan('non-existent'));
     }
 
-    public function testRemoveSpan(): void
+    public function test_remove_span(): void
     {
-        $span = new NullSpan();
+        $span = new NullSpan;
         $spanId = 'test-span-id';
 
         $this->manager->registerSpan($spanId, $span);
@@ -48,10 +47,10 @@ class SpanManagerTest extends TestCase
         $this->assertNull($this->manager->getSpan($spanId));
     }
 
-    public function testGetAllSpans(): void
+    public function test_get_all_spans(): void
     {
-        $span1 = new NullSpan();
-        $span2 = new NullSpan();
+        $span1 = new NullSpan;
+        $span2 = new NullSpan;
 
         $this->manager->registerSpan('span-1', $span1);
         $this->manager->registerSpan('span-2', $span2);
@@ -63,9 +62,9 @@ class SpanManagerTest extends TestCase
         $this->assertSame($span2, $allSpans['span-2']);
     }
 
-    public function testClear(): void
+    public function test_clear(): void
     {
-        $span = new NullSpan();
+        $span = new NullSpan;
         $this->manager->registerSpan('span-1', $span);
         $this->assertTrue($this->manager->hasSpan('span-1'));
 

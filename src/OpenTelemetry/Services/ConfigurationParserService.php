@@ -15,8 +15,7 @@ class ConfigurationParserService
 {
     public function __construct(
         private readonly EnvironmentService $environmentService
-    ) {
-    }
+    ) {}
 
     /**
      * Parse configuration from Laravel config array
@@ -52,7 +51,7 @@ class ConfigurationParserService
         $useCollector = $config['otel_use_collector'] ?? false;
 
         // If basic auth keys are provided and we are NOT using a collector, add Basic Auth
-        if (!$useCollector && isset($config['public_key']) && isset($config['secret_key'])) {
+        if (! $useCollector && isset($config['public_key']) && isset($config['secret_key'])) {
             $headers['Authorization'] = 'Basic '.base64_encode($config['public_key'].':'.$config['secret_key']);
         }
 
@@ -88,7 +87,7 @@ class ConfigurationParserService
     private function parseResourceAttributes(): array
     {
         $attributesEnv = $this->environmentService->getEnvValue('OTEL_RESOURCE_ATTRIBUTES');
-        if (!$attributesEnv) {
+        if (! $attributesEnv) {
             return [];
         }
 
@@ -122,12 +121,12 @@ class ConfigurationParserService
             throw ConfigurationException::missingRequiredValue('otel_endpoint');
         }
 
-        if (!filter_var($config->endpoint, FILTER_VALIDATE_URL)) {
+        if (! filter_var($config->endpoint, FILTER_VALIDATE_URL)) {
             throw ConfigurationException::invalidUrl($config->endpoint);
         }
 
-        if (!in_array($config->protocol, ['http/json', 'http/protobuf', 'grpc'])) {
-            throw ConfigurationException::invalidValue('otel_protocol', "Must be one of: http/json, http/protobuf, grpc");
+        if (! in_array($config->protocol, ['http/json', 'http/protobuf', 'grpc'])) {
+            throw ConfigurationException::invalidValue('otel_protocol', 'Must be one of: http/json, http/protobuf, grpc');
         }
 
         if ($config->timeout <= 0) {

@@ -23,8 +23,6 @@ interface PrismResponseExtractorInterface
 {
     /**
      * Extract data from a Prism response.
-     *
-     * @param TextResponse|StructuredResponse|EmbeddingsResponse|ImagesResponse|ModerationResponse|TextToSpeechResponse|SpeechToTextResponse $response
      */
     public function extract(
         TextResponse|StructuredResponse|EmbeddingsResponse|ImagesResponse|ModerationResponse|TextToSpeechResponse|SpeechToTextResponse $response

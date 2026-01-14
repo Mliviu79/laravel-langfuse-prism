@@ -19,15 +19,14 @@ class PrismEventHandler
 
     public function __construct(
         private readonly LangfuseClientInterface $langfuse
-    ) {
-    }
+    ) {}
 
     /**
      * Handle the prompt executing event
      */
     public function handlePromptExecuting($event): void
     {
-        if (!config('langfuse.prism.auto_trace', true)) {
+        if (! config('langfuse.prism.auto_trace', true)) {
             return;
         }
 
@@ -43,7 +42,7 @@ class PrismEventHandler
         // Store the generation for completion handling
         $this->activeGenerations[$requestId] = [
             'generation' => $generation,
-            'start_time' => new DateTime(),
+            'start_time' => new DateTime,
         ];
 
         // Add model parameters if available
@@ -59,13 +58,13 @@ class PrismEventHandler
      */
     public function handlePromptExecuted($event): void
     {
-        if (!config('langfuse.prism.auto_trace', true)) {
+        if (! config('langfuse.prism.auto_trace', true)) {
             return;
         }
 
         $requestId = $this->getRequestId($event);
 
-        if (!isset($this->activeGenerations[$requestId])) {
+        if (! isset($this->activeGenerations[$requestId])) {
             return;
         }
 
@@ -333,7 +332,7 @@ class PrismEventHandler
             $usage = $event->getResponse()->getUsage();
         }
 
-        if (!$usage) {
+        if (! $usage) {
             return [];
         }
 
@@ -366,7 +365,7 @@ class PrismEventHandler
             $cost = $event->getResponse()->getCost();
         }
 
-        if (!$cost) {
+        if (! $cost) {
             return [];
         }
 

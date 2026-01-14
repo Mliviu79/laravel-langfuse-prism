@@ -27,8 +27,7 @@ readonly class ObservationDto
         public ?array $modelParameters = null,
         public ?array $usageDetails = null,
         public ?array $costDetails = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

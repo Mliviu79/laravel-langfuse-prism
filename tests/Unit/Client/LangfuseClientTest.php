@@ -23,10 +23,15 @@ use PHPUnit\Framework\TestCase;
 class LangfuseClientTest extends TestCase
 {
     private Configuration $config;
+
     private MockInterface $apiClient;
+
     private MockInterface $tracingService;
+
     private MockInterface $datasetService;
+
     private MockInterface $scoreService;
+
     private LangfuseClient $client;
 
     protected function setUp(): void
@@ -62,8 +67,8 @@ class LangfuseClientTest extends TestCase
 
     public function test_start_span_delegates_to_tracing_service(): void
     {
-        $expectedSpan = new NullSpan();
-        
+        $expectedSpan = new NullSpan;
+
         $this->tracingService->shouldReceive('startSpan')
             ->once()
             ->with(
@@ -87,9 +92,9 @@ class LangfuseClientTest extends TestCase
 
     public function test_start_span_passes_all_parameters(): void
     {
-        $expectedSpan = new NullSpan();
+        $expectedSpan = new NullSpan;
         $metadata = ['key' => 'value'];
-        
+
         $this->tracingService->shouldReceive('startSpan')
             ->once()
             ->withArgs(function ($name, $type, $input, $output, $meta) use ($metadata) {

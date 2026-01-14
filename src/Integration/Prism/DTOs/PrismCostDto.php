@@ -13,8 +13,7 @@ readonly class PrismCostDto
         public float $inputCost = 0.0,
         public float $outputCost = 0.0,
         public float $totalCost = 0.0,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

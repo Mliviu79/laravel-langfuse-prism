@@ -10,9 +10,9 @@ use Langfuse\Integration\Laravel\Services\ConfigurationFactory;
 use Langfuse\Observability\Contracts\EventDispatcherInterface;
 use Langfuse\Observability\Contracts\SpanInterface;
 use Langfuse\Observability\Contracts\TracerInterface;
-use Langfuse\OpenTelemetry\Contracts\TracerProviderFactoryInterface;
 use Langfuse\Observability\Services\AttributeMapperService;
 use Langfuse\Observability\Services\ParentResolverService;
+use Langfuse\OpenTelemetry\Contracts\TracerProviderFactoryInterface;
 use Langfuse\Support\Contracts\IdGeneratorInterface;
 use Langfuse\Support\Enums\ObservationType;
 use Langfuse\Support\Enums\SpanLevel;
@@ -30,8 +30,7 @@ class LazyTracerWrapper implements TracerInterface
         private readonly ConfigurationFactory $configFactory,
         private readonly Configuration $config,
         private readonly ?EventDispatcherInterface $eventDispatcher = null
-    ) {
-    }
+    ) {}
 
     /**
      * Get or create the actual tracer wrapper
@@ -63,6 +62,7 @@ class LazyTracerWrapper implements TracerInterface
                 } catch (\Throwable) {
                     $idGenerator = null;
                 }
+
                 return new \Langfuse\Observability\Spans\NullTracer($idGenerator);
             }
         }

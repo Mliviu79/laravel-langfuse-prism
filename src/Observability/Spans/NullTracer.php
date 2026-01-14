@@ -17,8 +17,7 @@ class NullTracer implements TracerInterface
 {
     public function __construct(
         private readonly ?IdGeneratorInterface $idGenerator = null
-    ) {
-    }
+    ) {}
 
     public function startSpan(
         string $name,

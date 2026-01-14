@@ -15,8 +15,7 @@ class QueueService implements QueueServiceInterface
 {
     public function __construct(
         private readonly Queue $queue
-    ) {
-    }
+    ) {}
 
     /**
      * Dispatch a job to the queue
@@ -41,7 +40,7 @@ class QueueService implements QueueServiceInterface
     public function dispatchFlushSpans(): void
     {
         if ($this->shouldUseQueue()) {
-            $this->dispatch(new FlushSpansJob());
+            $this->dispatch(new FlushSpansJob);
         }
     }
 }

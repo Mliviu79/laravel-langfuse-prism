@@ -4,30 +4,29 @@ declare(strict_types=1);
 
 namespace Langfuse\Tests\Integration;
 
-use DateTime;
 use Langfuse\Client\Contracts\LangfuseClientInterface;
 use Langfuse\Observability\Contracts\SpanInterface;
 use Langfuse\Observability\Contracts\TracerInterface;
-use Langfuse\Observability\Spans\OpenTelemetrySpan;
 use Langfuse\Support\Enums\ObservationType;
 use Langfuse\Support\Enums\SpanLevel;
 use Langfuse\Tests\TestCase;
 
 /**
  * Integration tests for the full tracing workflow.
- * 
+ *
  * These tests verify that spans are created, updated, and exported
  * to the OTEL Collector at cloud.langfuse.com.
  */
 class TracingIntegrationTest extends TestCase
 {
     private ?LangfuseClientInterface $langfuse = null;
+
     private ?TracerInterface $tracer = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Skip if using placeholder credentials
         if (str_contains(env('LANGFUSE_PUBLIC_KEY', ''), 'placeholder')) {
             $this->markTestSkipped('Skipping integration test due to placeholder credentials');
@@ -129,7 +128,7 @@ class TracingIntegrationTest extends TestCase
 
         // Child should share the same trace ID
         $this->assertEquals($traceId, $childSpan->getTraceId());
-        
+
         // Update and end child
         $childSpan->update(
             output: ['result' => 'Child completed'],
@@ -352,13 +351,13 @@ class TracingIntegrationTest extends TestCase
             type: ObservationType::GENERATION,
             input: ['prompt' => 'Process this data'],
         );
-        
+
         $llmSpan->update(
             model: 'gpt-4',
             output: ['text' => 'Processed result'],
             usageDetails: ['input' => 20, 'output' => 50, 'total' => 70],
         );
-        
+
         // Add score to LLM call
         $llmSpan->score('quality', 0.9);
         $llmSpan->end();

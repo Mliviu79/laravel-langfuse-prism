@@ -16,16 +16,18 @@ use PHPUnit\Framework\TestCase;
 class ScoreServiceTest extends TestCase
 {
     private MockInterface $apiClient;
+
     private MockInterface $idGenerator;
+
     private ScoreService $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->apiClient = Mockery::mock(ApiClientInterface::class);
         $this->idGenerator = Mockery::mock(IdGeneratorInterface::class);
-        
+
         $this->service = new ScoreService($this->apiClient, $this->idGenerator);
     }
 
@@ -115,13 +117,13 @@ class ScoreServiceTest extends TestCase
         $this->idGenerator->shouldReceive('generateScoreId')->andReturn('score-123');
         $this->apiClient->shouldReceive('createScore')
             ->with(Mockery::on(function ($data) {
-                return !array_key_exists('observationId', $data)
-                    && !array_key_exists('comment', $data)
-                    && !array_key_exists('configId', $data);
+                return ! array_key_exists('observationId', $data)
+                    && ! array_key_exists('comment', $data)
+                    && ! array_key_exists('configId', $data);
             }));
 
         $score = $this->service->createScore('accuracy', 0.95, 'trace-123');
-        
+
         $this->assertEquals('score-123', $score->id);
     }
 

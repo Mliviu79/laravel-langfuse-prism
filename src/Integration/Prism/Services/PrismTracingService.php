@@ -45,13 +45,10 @@ class PrismTracingService
         private readonly bool $traceModelParams = true,
         private readonly bool $traceUsage = true,
         private readonly bool $traceCost = true,
-    ) {
-    }
+    ) {}
 
     /**
      * Start tracing a Prism operation.
-     *
-     * @param PrismRequest|TextRequest|StructuredRequest|EmbeddingsRequest|ImagesRequest|ModerationRequest|TextToSpeechRequest|SpeechToTextRequest $request
      */
     public function startTrace(
         PrismRequest|TextRequest|StructuredRequest|EmbeddingsRequest|ImagesRequest|ModerationRequest|TextToSpeechRequest|SpeechToTextRequest $request,
@@ -90,8 +87,6 @@ class PrismTracingService
 
     /**
      * Update span with successful response.
-     *
-     * @param TextResponse|StructuredResponse|EmbeddingsResponse|ImagesResponse|ModerationResponse|TextToSpeechResponse|SpeechToTextResponse $response
      */
     public function updateWithSuccess(
         SpanInterface $span,
@@ -130,7 +125,7 @@ class PrismTracingService
 
         // Add additional response metadata
         $responseMetadata = $this->metadataExtractor->extractFromResponse($response);
-        if (!empty($responseMetadata)) {
+        if (! empty($responseMetadata)) {
             $updateData['metadata'] = $responseMetadata;
         }
 

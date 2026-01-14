@@ -12,7 +12,6 @@ use Langfuse\Scoring\Enums\ScoreDataType;
 use Langfuse\Scoring\Score;
 use Langfuse\Support\Contracts\IdGeneratorInterface;
 use Langfuse\Support\Enums\ObservationType;
-use Langfuse\Support\Enums\SpanLevel;
 use Mockery;
 use Mockery\MockInterface;
 use OpenTelemetry\API\Trace\SpanInterface as OtelSpanInterface;
@@ -22,15 +21,19 @@ use PHPUnit\Framework\TestCase;
 class OpenTelemetrySpanTest extends TestCase
 {
     private MockInterface $otelSpan;
+
     private MockInterface $idGenerator;
+
     private MockInterface $scope;
+
     private MockInterface $tracerWrapper;
+
     private MockInterface $eventDispatcher;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->otelSpan = Mockery::mock(OtelSpanInterface::class);
         $this->idGenerator = Mockery::mock(IdGeneratorInterface::class);
         $this->scope = Mockery::mock(ScopeInterface::class);
@@ -100,7 +103,7 @@ class OpenTelemetrySpanTest extends TestCase
         $this->otelSpan->shouldReceive('updateName')
             ->once()
             ->with('new-name');
-        
+
         // Allow other setAttribute calls
         $this->otelSpan->shouldReceive('setAttribute')->zeroOrMoreTimes();
         $this->otelSpan->shouldReceive('setStatus')->zeroOrMoreTimes();
@@ -114,39 +117,39 @@ class OpenTelemetrySpanTest extends TestCase
     public function test_update_sets_input_attribute(): void
     {
         $inputData = ['prompt' => 'test prompt'];
-        
+
         // Allow any setAttribute calls
         $this->otelSpan->shouldReceive('setAttribute')->zeroOrMoreTimes();
 
         $span = $this->createSpan();
         $result = $span->update(input: $inputData);
-        
+
         $this->assertSame($span, $result);
     }
 
     public function test_update_sets_output_attribute(): void
     {
         $outputData = ['response' => 'test response'];
-        
+
         // Allow any setAttribute calls
         $this->otelSpan->shouldReceive('setAttribute')->zeroOrMoreTimes();
 
         $span = $this->createSpan();
         $result = $span->update(output: $outputData);
-        
+
         $this->assertSame($span, $result);
     }
 
     public function test_update_sets_metadata_attribute(): void
     {
         $metadata = ['key' => 'value'];
-        
+
         // The trait may set metadata via different attribute name or encoding
         $this->otelSpan->shouldReceive('setAttribute')->zeroOrMoreTimes();
 
         $span = $this->createSpan();
         $result = $span->update(metadata: $metadata);
-        
+
         $this->assertSame($span, $result);
     }
 
@@ -157,7 +160,7 @@ class OpenTelemetrySpanTest extends TestCase
 
         $span = $this->createSpan();
         $result = $span->update(model: 'gpt-4', modelParameters: ['temperature' => 0.7]);
-        
+
         $this->assertSame($span, $result);
     }
 
@@ -204,7 +207,7 @@ class OpenTelemetrySpanTest extends TestCase
     public function test_score_boolean_value(): void
     {
         $this->idGenerator->shouldReceive('generateScoreId')->andReturn('bool-score');
-        
+
         $this->otelSpan->shouldReceive('addEvent')
             ->once()
             ->with('langfuse.score', Mockery::on(function ($attributes) {
@@ -220,7 +223,7 @@ class OpenTelemetrySpanTest extends TestCase
     public function test_score_string_value(): void
     {
         $this->idGenerator->shouldReceive('generateScoreId')->andReturn('str-score');
-        
+
         $this->otelSpan->shouldReceive('addEvent')
             ->once()
             ->with('langfuse.score', Mockery::on(function ($attributes) {
@@ -243,7 +246,7 @@ class OpenTelemetrySpanTest extends TestCase
             ->once()
             ->with('langfuse.trace.score', Mockery::on(function ($attributes) {
                 return $attributes['score.trace_id'] === 'trace-456'
-                    && !isset($attributes['score.observation_id']);
+                    && ! isset($attributes['score.observation_id']);
             }));
 
         $span = $this->createSpan();
@@ -272,11 +275,11 @@ class OpenTelemetrySpanTest extends TestCase
     public function test_end_with_custom_time_sets_attribute(): void
     {
         $endTime = new DateTime('2025-01-12 10:00:00');
-        
+
         $this->otelSpan->shouldReceive('setAttribute')
             ->once()
             ->with('langfuse.observation.end_time', $endTime->format('c'));
-        
+
         $this->scope->shouldReceive('detach');
         $this->otelSpan->shouldReceive('end');
         $this->tracerWrapper->shouldReceive('removeSpan');
@@ -284,7 +287,7 @@ class OpenTelemetrySpanTest extends TestCase
 
         $span = $this->createSpan();
         $result = $span->end($endTime);
-        
+
         $this->assertSame($span, $result);
     }
 
@@ -293,7 +296,7 @@ class OpenTelemetrySpanTest extends TestCase
         $this->scope->shouldReceive('detach');
         $this->otelSpan->shouldReceive('end');
         $this->tracerWrapper->shouldReceive('removeSpan');
-        
+
         $this->eventDispatcher->shouldReceive('dispatchSpanEnded')->once();
         $this->eventDispatcher->shouldReceive('dispatchTraceCompleted')
             ->once()
@@ -301,7 +304,7 @@ class OpenTelemetrySpanTest extends TestCase
 
         $span = $this->createSpan(isRootSpan: true);
         $result = $span->end();
-        
+
         $this->assertSame($span, $result);
     }
 
@@ -317,7 +320,7 @@ class OpenTelemetrySpanTest extends TestCase
     public function test_start_observation_delegates_to_tracer(): void
     {
         $childSpan = Mockery::mock(OpenTelemetrySpan::class);
-        
+
         $this->tracerWrapper->shouldReceive('startSpan')
             ->once()
             ->with(

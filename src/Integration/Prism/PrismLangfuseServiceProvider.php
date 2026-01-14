@@ -40,12 +40,12 @@ class PrismLangfuseServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Early exit if Prism is not installed - prevents autoload errors
-        if (!$this->isPrismInstalled()) {
+        if (! $this->isPrismInstalled()) {
             return;
         }
 
         // Early exit if Prism integration is explicitly disabled
-        if (!$this->isPrismIntegrationEnabled()) {
+        if (! $this->isPrismIntegrationEnabled()) {
             return;
         }
 
@@ -143,7 +143,7 @@ class PrismLangfuseServiceProvider extends ServiceProvider
 
     /**
      * Extend the PrismManager with Langfuse tracing wrapper.
-     * 
+     *
      * Uses lazy resolution via closures to avoid circular dependency issues.
      * Dependencies are only resolved when actually needed (when resolve() is called),
      * not during the extend() callback execution.
@@ -151,7 +151,7 @@ class PrismLangfuseServiceProvider extends ServiceProvider
     private function extendPrismManager(): void
     {
         // Only extend if auto_trace is enabled
-        if (!config('langfuse.prism.auto_trace', true)) {
+        if (! config('langfuse.prism.auto_trace', true)) {
             return;
         }
 
@@ -162,8 +162,8 @@ class PrismLangfuseServiceProvider extends ServiceProvider
                 // during the extend callback - this prevents circular resolution
                 return new LangfusePrismManager(
                     originalManager: $original,
-                    langfuseResolver: fn() => $app->make(LangfuseClientInterface::class),
-                    tracingServiceResolver: fn() => $app->make(PrismTracingService::class),
+                    langfuseResolver: fn () => $app->make(LangfuseClientInterface::class),
+                    tracingServiceResolver: fn () => $app->make(PrismTracingService::class),
                 );
             }
         );

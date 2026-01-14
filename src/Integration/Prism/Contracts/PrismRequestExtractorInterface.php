@@ -24,8 +24,6 @@ interface PrismRequestExtractorInterface
 {
     /**
      * Extract data from a Prism request.
-     *
-     * @param PrismRequest|TextRequest|StructuredRequest|EmbeddingsRequest|ImagesRequest|ModerationRequest|TextToSpeechRequest|SpeechToTextRequest $request
      */
     public function extract(
         PrismRequest|TextRequest|StructuredRequest|EmbeddingsRequest|ImagesRequest|ModerationRequest|TextToSpeechRequest|SpeechToTextRequest $request

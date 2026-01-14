@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Langfuse\Observability\Services;
 
-use Langfuse\Observability\Contracts\SpanInterface;
 use Langfuse\Observability\Contracts\SpanManagerInterface;
 use OpenTelemetry\API\Trace\Span;
 use OpenTelemetry\API\Trace\SpanInterface as OtelSpanInterface;
@@ -17,14 +16,13 @@ class ParentResolverService
 {
     public function __construct(
         private readonly SpanManagerInterface $spanManager
-    ) {
-    }
+    ) {}
 
     /**
      * Resolve parent span information
      *
-     * @param string|null $parentId Explicit parent ID
-     * @param ContextInterface $currentContext Current OpenTelemetry context
+     * @param  string|null  $parentId  Explicit parent ID
+     * @param  ContextInterface  $currentContext  Current OpenTelemetry context
      * @return array{parentObservationId: string|null, isLangfuseRoot: bool, otelParentContext: ContextInterface|null}
      */
     public function resolveParent(?string $parentId, ContextInterface $currentContext): array
@@ -51,18 +49,18 @@ class ParentResolverService
             $currentSpan = Span::fromContext($currentContext);
             if ($currentSpan->getContext()->isValid()) {
                 $otelParentContext = $currentContext;
-                
+
                 // Check if this OTel parent is a Langfuse span (in our span manager)
                 $parentTraceId = $currentSpan->getContext()->getTraceId();
                 $parentSpanId = $currentSpan->getContext()->getSpanId();
-                
+
                 foreach ($this->spanManager->getAllSpans() as $activeSpan) {
                     if (method_exists($activeSpan, 'getOtelSpan')) {
                         /** @var OtelSpanInterface $activeOtelSpan */
                         $activeOtelSpan = $activeSpan->getOtelSpan();
                         $activeOtelContext = $activeOtelSpan->getContext();
-                        
-                        if ($activeOtelContext->getTraceId() === $parentTraceId 
+
+                        if ($activeOtelContext->getTraceId() === $parentTraceId
                             && $activeOtelContext->getSpanId() === $parentSpanId) {
                             $parentObservationId = $activeSpan->getId();
                             $isLangfuseRoot = false;

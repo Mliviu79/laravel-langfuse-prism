@@ -6,11 +6,6 @@ namespace Langfuse\Tests\Integration;
 
 use DateTime;
 use Langfuse\Client\Contracts\LangfuseClientInterface;
-use Langfuse\Integration\Prism\Contracts\PrismRequestExtractorInterface;
-use Langfuse\Integration\Prism\Contracts\PrismResponseExtractorInterface;
-use Langfuse\Integration\Prism\DTOs\PrismRequestDto;
-use Langfuse\Integration\Prism\DTOs\PrismResponseDto;
-use Langfuse\Integration\Prism\DTOs\PrismUsageDto;
 use Langfuse\Integration\Prism\Services\PrismMetadataExtractor;
 use Langfuse\Integration\Prism\Services\PrismTracingService;
 use Langfuse\Observability\Contracts\SpanInterface;
@@ -20,35 +15,36 @@ use Mockery;
 
 /**
  * Integration tests for Prism tracing provider.
- * 
+ *
  * These tests verify that the LangfuseTracingProvider correctly
  * traces Prism AI operations and exports them via OTEL.
- * 
+ *
  * Note: These tests mock Prism request/response objects since
  * actual Prism calls require API credentials.
  */
 class PrismIntegrationTest extends TestCase
 {
     private ?LangfuseClientInterface $langfuse = null;
+
     private ?PrismTracingService $tracingService = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Skip if using placeholder credentials
         if (str_contains(env('LANGFUSE_PUBLIC_KEY', ''), 'placeholder')) {
             $this->markTestSkipped('Skipping integration test due to placeholder credentials');
         }
-        
+
         $this->langfuse = $this->app->make(LangfuseClientInterface::class);
-        
+
         // Create the tracing service manually since Prism may not be installed
         $this->tracingService = new PrismTracingService(
             $this->langfuse,
-            new \Langfuse\Integration\Prism\Services\PrismRequestExtractor(),
-            new \Langfuse\Integration\Prism\Services\PrismResponseExtractor(),
-            new PrismMetadataExtractor(),
+            new \Langfuse\Integration\Prism\Services\PrismRequestExtractor,
+            new \Langfuse\Integration\Prism\Services\PrismResponseExtractor,
+            new PrismMetadataExtractor,
             traceModelParams: true,
             traceUsage: true,
             traceCost: true
@@ -96,7 +92,7 @@ class PrismIntegrationTest extends TestCase
         );
 
         // Update with response
-        $this->tracingService->updateWithSuccess($span, $response, new DateTime());
+        $this->tracingService->updateWithSuccess($span, $response, new DateTime);
 
         $span->end();
         $this->langfuse->flush();
@@ -127,7 +123,7 @@ class PrismIntegrationTest extends TestCase
             totalTokens: 8
         );
 
-        $this->tracingService->updateWithSuccess($span, $response, new DateTime());
+        $this->tracingService->updateWithSuccess($span, $response, new DateTime);
 
         $span->end();
         $this->langfuse->flush();
@@ -156,7 +152,7 @@ class PrismIntegrationTest extends TestCase
             resultsCount: 1
         );
 
-        $this->tracingService->updateWithSuccess($span, $response, new DateTime());
+        $this->tracingService->updateWithSuccess($span, $response, new DateTime);
 
         $span->end();
         $this->langfuse->flush();
@@ -212,7 +208,7 @@ class PrismIntegrationTest extends TestCase
             finishReason: 'tool_calls'
         );
 
-        $this->tracingService->updateWithSuccess($span, $response, new DateTime());
+        $this->tracingService->updateWithSuccess($span, $response, new DateTime);
 
         $span->end();
         $this->langfuse->flush();
@@ -242,7 +238,7 @@ class PrismIntegrationTest extends TestCase
             finishReason: 'stop'
         );
 
-        $this->tracingService->updateWithSuccess($span, $response, new DateTime());
+        $this->tracingService->updateWithSuccess($span, $response, new DateTime);
 
         $span->end();
         $this->langfuse->flush();
@@ -275,7 +271,7 @@ class PrismIntegrationTest extends TestCase
             finishReason: 'end_turn'
         );
 
-        $this->tracingService->updateWithSuccess($span, $response, new DateTime());
+        $this->tracingService->updateWithSuccess($span, $response, new DateTime);
 
         $span->end();
         $this->langfuse->flush();
@@ -301,6 +297,7 @@ class PrismIntegrationTest extends TestCase
         $request->shouldReceive('maxTokens')->andReturn($maxTokens);
         $request->shouldReceive('temperature')->andReturn($temperature);
         $request->shouldReceive('topP')->andReturn(null);
+
         return $request;
     }
 
@@ -323,6 +320,7 @@ class PrismIntegrationTest extends TestCase
         $request->shouldReceive('maxTokens')->andReturn(null);
         $request->shouldReceive('temperature')->andReturn(null);
         $request->shouldReceive('topP')->andReturn(null);
+
         return $request;
     }
 
@@ -374,7 +372,7 @@ class PrismIntegrationTest extends TestCase
 
         $realToolCalls = array_map(function ($tc) {
             return new \Prism\Prism\ValueObjects\ToolCall(
-                id: 'call_' . uniqid(),
+                id: 'call_'.uniqid(),
                 name: $tc['name'],
                 arguments: $tc['arguments']
             );
@@ -419,6 +417,7 @@ class PrismIntegrationTest extends TestCase
         $request->shouldReceive('maxTokens')->andReturn(null);
         $request->shouldReceive('temperature')->andReturn(null);
         $request->shouldReceive('topP')->andReturn(null);
+
         return $request;
     }
 
@@ -468,6 +467,7 @@ class PrismIntegrationTest extends TestCase
         $request->shouldReceive('model')->andReturn($model);
         $request->shouldReceive('inputs')->andReturn($inputs);
         $request->shouldReceive('hasImages')->andReturn(false);
+
         return $request;
     }
 
@@ -493,6 +493,7 @@ class PrismIntegrationTest extends TestCase
         $request->shouldReceive('provider')->andReturn($provider);
         $request->shouldReceive('model')->andReturn($model);
         $request->shouldReceive('inputs')->andReturn($inputs);
+
         return $request;
     }
 

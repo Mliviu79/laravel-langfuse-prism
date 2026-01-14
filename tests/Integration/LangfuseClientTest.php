@@ -10,9 +10,7 @@ use Langfuse\Client\LangfuseClient;
 use Langfuse\Client\Services\DatasetService;
 use Langfuse\Client\Services\ScoreService;
 use Langfuse\Client\Services\TracingService;
-use Langfuse\Observability\Contracts\TracerInterface;
 use Langfuse\Observability\Spans\NullSpan;
-use Langfuse\Support\Enums\ObservationType;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +22,7 @@ class LangfuseClientTest extends TestCase
         parent::tearDown();
     }
 
-    public function testStartSpanDelegatesToTracingService(): void
+    public function test_start_span_delegates_to_tracing_service(): void
     {
         $config = new Configuration(
             publicKey: 'test-key',
@@ -34,7 +32,7 @@ class LangfuseClientTest extends TestCase
         );
 
         $apiClient = Mockery::mock(ApiClientInterface::class);
-        $span = new NullSpan();
+        $span = new NullSpan;
 
         $tracingService = Mockery::mock(TracingService::class);
         $tracingService->shouldReceive('startSpan')
@@ -54,7 +52,7 @@ class LangfuseClientTest extends TestCase
         $this->assertSame($span, $result);
     }
 
-    public function testFlushDelegatesToTracingService(): void
+    public function test_flush_delegates_to_tracing_service(): void
     {
         $config = new Configuration(
             publicKey: 'test-key',
@@ -76,7 +74,7 @@ class LangfuseClientTest extends TestCase
         $this->assertTrue(true); // Verify flush was called
     }
 
-    public function testShutdownDelegatesToTracingService(): void
+    public function test_shutdown_delegates_to_tracing_service(): void
     {
         $config = new Configuration(
             publicKey: 'test-key',

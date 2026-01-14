@@ -19,7 +19,7 @@ class VideoProcessor implements MediaProcessorInterface
 
     public function process(mixed $content, MediaContentType $contentType): array
     {
-        if (!is_string($content)) {
+        if (! is_string($content)) {
             throw new \InvalidArgumentException('Video content must be a string');
         }
 

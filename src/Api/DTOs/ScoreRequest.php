@@ -18,8 +18,7 @@ readonly class ScoreRequest
         public ?string $observationId = null,
         public ?string $comment = null,
         public ?string $configId = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

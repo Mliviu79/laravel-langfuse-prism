@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class SpanCreationDtoTest extends TestCase
 {
-    public function testFromArray(): void
+    public function test_from_array(): void
     {
         $data = [
             'name' => 'test-span',
@@ -40,7 +40,7 @@ class SpanCreationDtoTest extends TestCase
         $this->assertSame('gpt-4', $dto->model);
     }
 
-    public function testFromArrayWithDefaults(): void
+    public function test_from_array_with_defaults(): void
     {
         $data = ['name' => 'test-span'];
         $dto = SpanCreationDto::fromArray($data);
@@ -51,7 +51,7 @@ class SpanCreationDtoTest extends TestCase
         $this->assertNull($dto->output);
     }
 
-    public function testToArray(): void
+    public function test_to_array(): void
     {
         $dto = new SpanCreationDto(
             name: 'test-span',
@@ -80,7 +80,7 @@ class SpanCreationDtoTest extends TestCase
         $this->assertSame('gpt-4', $array['model']);
     }
 
-    public function testToArrayFiltersNulls(): void
+    public function test_to_array_filters_nulls(): void
     {
         $dto = new SpanCreationDto(name: 'test-span');
         $array = $dto->toArray();

@@ -15,8 +15,7 @@ final readonly class DatasetRun
         public array $metadata = [],
         public ?\DateTime $createdAt = null,
         public ?\DateTime $updatedAt = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Convert to array representation

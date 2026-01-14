@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Langfuse\Tests\Integration;
 
-use Langfuse\Api\Contracts\ApiClientInterface;
 use Langfuse\Client\Contracts\LangfuseClientInterface;
 use Langfuse\Client\Services\DatasetService;
 use Langfuse\Client\Services\ScoreService;
@@ -15,39 +14,42 @@ use Langfuse\Tests\TestCase;
 
 /**
  * Integration tests for API client operations.
- * 
+ *
  * These tests verify that the API client correctly communicates
  * with the Langfuse API for score and dataset operations.
- * 
+ *
  * Note: These tests require valid Langfuse API credentials.
  * Set LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY environment variables.
  */
 class ApiClientIntegrationTest extends TestCase
 {
     private LangfuseClientInterface $langfuse;
+
     private ScoreService $scoreService;
+
     private DatasetService $datasetService;
+
     private bool $hasValidCredentials = false;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->langfuse = $this->app->make(LangfuseClientInterface::class);
         $this->scoreService = $this->app->make(ScoreService::class);
         $this->datasetService = $this->app->make(DatasetService::class);
-        
+
         // Check if we have valid credentials (real pk-lf-* format)
         $publicKey = env('LANGFUSE_PUBLIC_KEY', '');
-        $this->hasValidCredentials = !empty($publicKey) 
+        $this->hasValidCredentials = ! empty($publicKey)
             && str_starts_with($publicKey, 'pk-lf-')
-            && !str_contains($publicKey, 'placeholder')
+            && ! str_contains($publicKey, 'placeholder')
             && strlen($publicKey) > 10;
     }
-    
+
     protected function skipIfNoCredentials(): void
     {
-        if (!$this->hasValidCredentials) {
+        if (! $this->hasValidCredentials) {
             $this->markTestSkipped('Valid Langfuse API credentials required for this test.');
         }
     }
@@ -162,7 +164,7 @@ class ApiClientIntegrationTest extends TestCase
     public function test_create_dataset(): void
     {
         $this->skipIfNoCredentials();
-        
+
         $testId = uniqid('api-test-');
         $datasetName = "integration-test-dataset-{$testId}";
 
@@ -187,7 +189,7 @@ class ApiClientIntegrationTest extends TestCase
     public function test_get_dataset(): void
     {
         $this->skipIfNoCredentials();
-        
+
         $testId = uniqid('api-test-');
         $datasetName = "integration-test-get-dataset-{$testId}";
 
@@ -217,7 +219,7 @@ class ApiClientIntegrationTest extends TestCase
     public function test_create_dataset_item(): void
     {
         $this->skipIfNoCredentials();
-        
+
         $testId = uniqid('api-test-');
         $datasetName = "integration-test-items-{$testId}";
 
@@ -256,7 +258,7 @@ class ApiClientIntegrationTest extends TestCase
     public function test_create_dataset_item_with_source_trace(): void
     {
         $this->skipIfNoCredentials();
-        
+
         $testId = uniqid('api-test-');
         $datasetName = "integration-test-items-trace-{$testId}";
 
@@ -290,7 +292,7 @@ class ApiClientIntegrationTest extends TestCase
     public function test_create_dataset_run(): void
     {
         $this->skipIfNoCredentials();
-        
+
         $testId = uniqid('api-test-');
         $datasetName = "integration-test-run-{$testId}";
         $runName = "run-{$testId}";

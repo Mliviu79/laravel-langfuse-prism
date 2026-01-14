@@ -25,12 +25,11 @@ class TracerProviderFactory implements TracerProviderFactoryInterface
 {
     public function __construct(
         private readonly SpanExporterFactoryInterface $spanExporterFactory
-    ) {
-    }
+    ) {}
 
     public function create(OpenTelemetryConfigDto $config, ?LoggerInterface $logger = null): TracerProviderInterface
     {
-        $logger = $logger ?? new NullLogger();
+        $logger = $logger ?? new NullLogger;
 
         // Create resource with service information
         $resource = ResourceInfo::create(Attributes::create([

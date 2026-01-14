@@ -28,8 +28,7 @@ class LangfuseClient implements LangfuseClientInterface
         private readonly TracingService $tracingService,
         private readonly DatasetService $datasetService,
         private readonly ScoreService $scoreService,
-    ) {
-    }
+    ) {}
 
     public function startSpan(
         string $name,

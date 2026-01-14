@@ -18,11 +18,11 @@ use Prism\Prism\Images\Response as ImagesResponse;
 use Prism\Prism\Moderation\Request as ModerationRequest;
 use Prism\Prism\Moderation\Response as ModerationResponse;
 use Prism\Prism\Providers\Provider;
-use Prism\Prism\Structured\Request as StructuredRequest;
-use Prism\Prism\Structured\Response as StructuredResponse;
 use Prism\Prism\Streaming\Events\StreamEndEvent;
 use Prism\Prism\Streaming\Events\StreamEvent;
 use Prism\Prism\Streaming\Events\TextDeltaEvent;
+use Prism\Prism\Structured\Request as StructuredRequest;
+use Prism\Prism\Structured\Response as StructuredResponse;
 use Prism\Prism\Text\Request as TextRequest;
 use Prism\Prism\Text\Response as TextResponse;
 use Throwable;
@@ -38,16 +38,15 @@ class LangfuseTracingProvider extends Provider
     public function __construct(
         private readonly Provider $provider,
         private readonly PrismTracingService $tracingService,
-    ) {
-    }
+    ) {}
 
     public function text(TextRequest $request): TextResponse
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $this->provider->text($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'text');
 
         try {
@@ -65,11 +64,11 @@ class LangfuseTracingProvider extends Provider
 
     public function structured(StructuredRequest $request): StructuredResponse
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $this->provider->structured($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'structured');
 
         try {
@@ -87,11 +86,11 @@ class LangfuseTracingProvider extends Provider
 
     public function embeddings(EmbeddingsRequest $request): EmbeddingsResponse
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $this->provider->embeddings($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'embeddings');
 
         try {
@@ -109,11 +108,11 @@ class LangfuseTracingProvider extends Provider
 
     public function images(ImagesRequest $request): ImagesResponse
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $this->provider->images($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'images');
 
         try {
@@ -133,11 +132,11 @@ class LangfuseTracingProvider extends Provider
 
     public function moderation(ModerationRequest $request): ModerationResponse
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $this->provider->moderation($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'moderation');
 
         try {
@@ -161,11 +160,11 @@ class LangfuseTracingProvider extends Provider
 
     public function textToSpeech(TextToSpeechRequest $request): TextToSpeechResponse
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $this->provider->textToSpeech($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'text-to-speech');
 
         try {
@@ -183,11 +182,11 @@ class LangfuseTracingProvider extends Provider
 
     public function speechToText(SpeechToTextRequest $request): SpeechToTextResponse
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $this->provider->speechToText($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'speech-to-text');
 
         try {
@@ -210,13 +209,13 @@ class LangfuseTracingProvider extends Provider
      */
     public function stream(TextRequest $request): Generator
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             yield from $this->provider->stream($request);
 
             return;
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'text-stream');
         $aggregatedText = '';
         $aggregatedUsage = null;

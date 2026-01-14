@@ -40,7 +40,7 @@ class MediaManager
         string $traceId,
         string $observationId
     ): mixed {
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             return $this->processValue($data, $field, $traceId, $observationId);
         }
 
@@ -63,7 +63,7 @@ class MediaManager
     private function processValue(mixed $value, string $field, string $traceId, string $observationId): mixed
     {
         // Check if value looks like media content
-        if (!$this->isMediaContent($value)) {
+        if (! $this->isMediaContent($value)) {
             return $value;
         }
 
@@ -84,7 +84,7 @@ class MediaManager
      */
     private function isMediaContent(mixed $value): bool
     {
-        if (!is_string($value)) {
+        if (! is_string($value)) {
             return false;
         }
 
@@ -100,6 +100,7 @@ class MediaManager
 
         // Check for file paths to supported media types
         $extension = pathinfo($value, PATHINFO_EXTENSION);
+
         return MediaContentType::fromFileExtension($extension) !== null;
     }
 
@@ -114,7 +115,7 @@ class MediaManager
 
         // Find appropriate processor
         $processor = $this->findProcessor($contentType);
-        if (!$processor) {
+        if (! $processor) {
             throw new LangfuseException("No processor found for content type: {$contentType->value}");
         }
 
@@ -180,7 +181,7 @@ class MediaManager
             ];
         }
 
-        throw new LangfuseException("Unable to extract media info from content");
+        throw new LangfuseException('Unable to extract media info from content');
     }
 
     /**
@@ -237,9 +238,9 @@ class MediaManager
      */
     private function registerDefaultProcessors(): void
     {
-        $this->registerProcessor(new Processors\ImageProcessor());
-        $this->registerProcessor(new Processors\VideoProcessor());
-        $this->registerProcessor(new Processors\AudioProcessor());
-        $this->registerProcessor(new Processors\DocumentProcessor());
+        $this->registerProcessor(new Processors\ImageProcessor);
+        $this->registerProcessor(new Processors\VideoProcessor);
+        $this->registerProcessor(new Processors\AudioProcessor);
+        $this->registerProcessor(new Processors\DocumentProcessor);
     }
 }

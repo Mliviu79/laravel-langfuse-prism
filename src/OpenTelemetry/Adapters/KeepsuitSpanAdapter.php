@@ -40,7 +40,7 @@ class KeepsuitSpanAdapter implements SpanInterface
     ) {
         // Set initial Langfuse-specific attributes
         $this->setObservationTypeAttributes($this->otelSpan, $type, $this->spanId);
-        
+
         if ($input !== null) {
             $this->setInputAttributes($this->otelSpan, $input, $this->isRootSpan);
         }
@@ -182,8 +182,9 @@ class KeepsuitSpanAdapter implements SpanInterface
         if ($this->scope !== null) {
             $this->scope->detach();
         }
-        
+
         $this->otelSpan->end();
+
         return $this;
     }
 
@@ -192,7 +193,7 @@ class KeepsuitSpanAdapter implements SpanInterface
         $this->otelSpan->recordException($exception);
         $this->otelSpan->setStatus(StatusCode::STATUS_ERROR, $exception->getMessage());
         $this->setLevelAttributes($this->otelSpan, SpanLevel::ERROR, $exception->getMessage());
-        
+
         return $this;
     }
 

@@ -7,7 +7,6 @@ namespace Langfuse\Integration\Laravel\Services;
 use Langfuse\Client\Configuration;
 use Langfuse\OpenTelemetry\DTOs\OpenTelemetryConfigDto;
 use Langfuse\OpenTelemetry\Services\ConfigurationParserService;
-use Langfuse\OpenTelemetry\Services\EnvironmentService;
 
 /**
  * Factory for creating configuration objects from Laravel config
@@ -16,8 +15,7 @@ class ConfigurationFactory
 {
     public function __construct(
         private readonly ConfigurationParserService $configParser
-    ) {
-    }
+    ) {}
 
     /**
      * Create Langfuse Configuration from Laravel config

@@ -17,7 +17,7 @@ class SpanManagerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->manager = new SpanManager();
+        $this->manager = new SpanManager;
     }
 
     protected function tearDown(): void
@@ -28,8 +28,8 @@ class SpanManagerTest extends TestCase
 
     public function test_register_span_stores_span(): void
     {
-        $span = new NullSpan();
-        
+        $span = new NullSpan;
+
         $this->manager->registerSpan('span-1', $span);
 
         $this->assertTrue($this->manager->hasSpan('span-1'));
@@ -37,7 +37,7 @@ class SpanManagerTest extends TestCase
 
     public function test_get_span_returns_registered_span(): void
     {
-        $span = new NullSpan();
+        $span = new NullSpan;
         $this->manager->registerSpan('span-1', $span);
 
         $result = $this->manager->getSpan('span-1');
@@ -54,9 +54,9 @@ class SpanManagerTest extends TestCase
 
     public function test_remove_span_deletes_span(): void
     {
-        $span = new NullSpan();
+        $span = new NullSpan;
         $this->manager->registerSpan('span-1', $span);
-        
+
         $this->manager->removeSpan('span-1');
 
         $this->assertFalse($this->manager->hasSpan('span-1'));
@@ -65,7 +65,7 @@ class SpanManagerTest extends TestCase
 
     public function test_has_span_returns_true_for_registered_span(): void
     {
-        $span = new NullSpan();
+        $span = new NullSpan;
         $this->manager->registerSpan('span-1', $span);
 
         $this->assertTrue($this->manager->hasSpan('span-1'));
@@ -78,9 +78,9 @@ class SpanManagerTest extends TestCase
 
     public function test_get_all_spans_returns_all_registered_spans(): void
     {
-        $span1 = new NullSpan();
-        $span2 = new NullSpan();
-        
+        $span1 = new NullSpan;
+        $span2 = new NullSpan;
+
         $this->manager->registerSpan('span-1', $span1);
         $this->manager->registerSpan('span-2', $span2);
 
@@ -93,9 +93,9 @@ class SpanManagerTest extends TestCase
 
     public function test_clear_removes_all_spans(): void
     {
-        $this->manager->registerSpan('span-1', new NullSpan());
-        $this->manager->registerSpan('span-2', new NullSpan());
-        
+        $this->manager->registerSpan('span-1', new NullSpan);
+        $this->manager->registerSpan('span-2', new NullSpan);
+
         $this->manager->clear();
 
         $this->assertEmpty($this->manager->getAllSpans());
@@ -120,8 +120,8 @@ class SpanManagerTest extends TestCase
 
     public function test_registering_same_id_overwrites_span(): void
     {
-        $span1 = new NullSpan();
-        $span2 = new NullSpan();
+        $span1 = new NullSpan;
+        $span2 = new NullSpan;
 
         $this->manager->registerSpan('same-id', $span1);
         $this->manager->registerSpan('same-id', $span2);

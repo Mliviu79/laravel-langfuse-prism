@@ -6,13 +6,12 @@ namespace Langfuse\Tests\Integration;
 
 use Langfuse\Client\Configuration;
 use Langfuse\Client\Contracts\LangfuseClientInterface;
-use Langfuse\OpenTelemetry\Wrappers\TracerWrapper;
 use Langfuse\Support\Enums\ObservationType;
 use Langfuse\Tests\TestCase;
 
 /**
  * Integration tests for OTEL span export.
- * 
+ *
  * These tests verify that spans are correctly exported to the
  * OTEL Collector at cloud.langfuse.com.
  */
@@ -122,9 +121,9 @@ class SpanExportTest extends TestCase
             type: ObservationType::GENERATION,
             input: ['prompt' => 'Child 1 prompt'],
         );
-        
+
         $child1->update(model: 'gpt-4', output: ['text' => 'Child 1 response']);
-        
+
         // Nested grandchild
         $grandchild = $child1->startObservation(
             name: 'otel-export-test-grandchild',
@@ -133,7 +132,7 @@ class SpanExportTest extends TestCase
         );
         $grandchild->update(output: ['level' => 'deepest']);
         $grandchild->end();
-        
+
         $child1->end();
 
         $child2 = $parentSpan->startObservation(
@@ -141,7 +140,7 @@ class SpanExportTest extends TestCase
             type: ObservationType::EMBEDDING,
             input: ['texts' => ['text1', 'text2']],
         );
-        
+
         $child2->update(
             model: 'text-embedding-3-small',
             output: ['embeddings_count' => 2],
@@ -251,7 +250,7 @@ class SpanExportTest extends TestCase
                 'output' => 0.0015,
                 'total' => 0.002,
             ],
-            completionStartTime: new \DateTime(),
+            completionStartTime: new \DateTime,
         );
 
         // Add comprehensive scores
@@ -275,7 +274,7 @@ class SpanExportTest extends TestCase
 
         // Create a span with large input/output
         $largeText = str_repeat('This is a large text payload. ', 1000);
-        
+
         $span = $langfuse->startSpan(
             name: 'otel-export-test-large-payload',
             type: ObservationType::GENERATION,

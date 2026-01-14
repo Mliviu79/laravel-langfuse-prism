@@ -13,8 +13,7 @@ readonly class DatasetRequest
         public string $name,
         public ?string $description = null,
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

@@ -17,8 +17,7 @@ class ScoreService
     public function __construct(
         private readonly ApiClientInterface $apiClient,
         private readonly IdGeneratorInterface $idGenerator
-    ) {
-    }
+    ) {}
 
     /**
      * Create a score

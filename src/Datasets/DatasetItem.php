@@ -17,8 +17,7 @@ final readonly class DatasetItem
         public ?string $sourceObservationId = null,
         public ?\DateTime $createdAt = null,
         public ?\DateTime $updatedAt = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Convert to array representation

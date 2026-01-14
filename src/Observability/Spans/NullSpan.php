@@ -19,8 +19,7 @@ class NullSpan implements SpanInterface
 {
     public function __construct(
         private readonly ?IdGeneratorInterface $idGenerator = null
-    ) {
-    }
+    ) {}
 
     /**
      * Generate a fallback score ID when no IdGenerator is available

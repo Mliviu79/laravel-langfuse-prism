@@ -17,19 +17,18 @@ class PrismLangfuseMiddleware
 {
     public function __construct(
         private readonly PrismTracingService $tracingService
-    ) {
-    }
+    ) {}
 
     /**
      * Handle the Prism request
      */
     public function handle(mixed $request, Closure $next): mixed
     {
-        if (!$this->shouldTrace()) {
+        if (! $this->shouldTrace()) {
             return $next($request);
         }
 
-        $startTime = new DateTime();
+        $startTime = new DateTime;
         $span = $this->tracingService->startTrace($request, 'middleware');
 
         try {

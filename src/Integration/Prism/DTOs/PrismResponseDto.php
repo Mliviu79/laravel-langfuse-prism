@@ -21,8 +21,7 @@ readonly class PrismResponseDto
         public ?array $metadata = null,
         public ?DateTime $completionStartTime = null,
         public ?float $responseTime = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

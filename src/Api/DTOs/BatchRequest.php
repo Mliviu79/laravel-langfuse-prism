@@ -10,12 +10,11 @@ namespace Langfuse\Api\DTOs;
 readonly class BatchRequest
 {
     /**
-     * @param array<int, array{id: string, timestamp: string, type: string, body: array}> $batch
+     * @param  array<int, array{id: string, timestamp: string, type: string, body: array}>  $batch
      */
     public function __construct(
         public array $batch,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

@@ -23,8 +23,7 @@ readonly class SpanCreationDto
         public ?string $statusMessage = null,
         public ?string $parentId = null,
         public ?string $model = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

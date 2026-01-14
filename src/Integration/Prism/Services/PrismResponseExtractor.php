@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Langfuse\Integration\Prism\Services;
 
-use DateTime;
 use Langfuse\Integration\Prism\Contracts\PrismResponseExtractorInterface;
-use Langfuse\Integration\Prism\DTOs\PrismCostDto;
 use Langfuse\Integration\Prism\DTOs\PrismResponseDto;
 use Langfuse\Integration\Prism\DTOs\PrismUsageDto;
 use Prism\Prism\Audio\AudioResponse as TextToSpeechResponse;
@@ -179,7 +177,7 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
 
         // TextResponse has tool calls and results
         if ($response instanceof TextResponse) {
-            if (!empty($response->toolCalls)) {
+            if (! empty($response->toolCalls)) {
                 $additional['tool_calls'] = array_map(function ($toolCall) {
                     return [
                         'name' => $toolCall->name,
@@ -188,7 +186,7 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
                 }, $response->toolCalls);
             }
 
-            if (!empty($response->toolResults)) {
+            if (! empty($response->toolResults)) {
                 $additional['tool_results'] = array_map(function ($toolResult) {
                     return [
                         'name' => $toolResult->toolName,
@@ -197,7 +195,7 @@ class PrismResponseExtractor implements PrismResponseExtractorInterface
                 }, $response->toolResults);
             }
 
-            if (!empty($response->additionalContent)) {
+            if (! empty($response->additionalContent)) {
                 $additional['additional_content'] = $response->additionalContent;
             }
         }

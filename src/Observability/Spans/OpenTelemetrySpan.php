@@ -15,7 +15,6 @@ use Langfuse\Support\Contracts\IdGeneratorInterface;
 use Langfuse\Support\Enums\ObservationType;
 use Langfuse\Support\Enums\SpanLevel;
 use OpenTelemetry\API\Trace\SpanInterface as OtelSpanInterface;
-use OpenTelemetry\API\Trace\StatusCode;
 use OpenTelemetry\Context\ScopeInterface;
 
 /**
@@ -27,6 +26,7 @@ use OpenTelemetry\Context\ScopeInterface;
 class OpenTelemetrySpan implements SpanInterface
 {
     use HasSpanAttributes;
+
     public function __construct(
         private readonly OtelSpanInterface $otelSpan,
         private readonly string $spanId,
@@ -38,8 +38,7 @@ class OpenTelemetrySpan implements SpanInterface
         private readonly ?TracerInterface $tracerWrapper = null,
         private readonly bool $isRootSpan = false,
         private readonly ?EventDispatcherInterface $eventDispatcher = null,
-    ) {
-    }
+    ) {}
 
     public function getId(): string
     {

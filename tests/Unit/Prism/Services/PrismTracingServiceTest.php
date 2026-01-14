@@ -15,7 +15,6 @@ use Langfuse\Integration\Prism\Services\PrismMetadataExtractor;
 use Langfuse\Integration\Prism\Services\PrismTracingService;
 use Langfuse\Observability\Contracts\SpanInterface;
 use Langfuse\Support\Enums\ObservationType;
-use Langfuse\Support\Enums\SpanLevel;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
@@ -23,9 +22,13 @@ use PHPUnit\Framework\TestCase;
 class PrismTracingServiceTest extends TestCase
 {
     private MockInterface $langfuse;
+
     private MockInterface $requestExtractor;
+
     private MockInterface $responseExtractor;
+
     private MockInterface $metadataExtractor;
+
     private PrismTracingService $service;
 
     protected function setUp(): void
@@ -57,7 +60,7 @@ class PrismTracingServiceTest extends TestCase
     public function test_start_trace_creates_span_with_correct_name(): void
     {
         $request = Mockery::mock(\Prism\Prism\Text\Request::class);
-        
+
         $requestDto = new PrismRequestDto(
             provider: 'openai',
             model: 'gpt-4',
@@ -94,7 +97,7 @@ class PrismTracingServiceTest extends TestCase
     public function test_start_trace_uses_generation_type_for_text(): void
     {
         $request = Mockery::mock(\Prism\Prism\Text\Request::class);
-        
+
         $this->requestExtractor->shouldReceive('extract')
             ->andReturn(new PrismRequestDto(
                 provider: 'openai',
@@ -114,14 +117,14 @@ class PrismTracingServiceTest extends TestCase
             ->andReturn($span);
 
         $result = $this->service->startTrace($request, 'text');
-        
+
         $this->assertInstanceOf(SpanInterface::class, $result);
     }
 
     public function test_start_trace_uses_embedding_type_for_embeddings(): void
     {
         $request = Mockery::mock(\Prism\Prism\Embeddings\Request::class);
-        
+
         $this->requestExtractor->shouldReceive('extract')
             ->andReturn(new PrismRequestDto(
                 provider: 'openai',
@@ -141,7 +144,7 @@ class PrismTracingServiceTest extends TestCase
             ->andReturn($span);
 
         $result = $this->service->startTrace($request, 'embeddings');
-        
+
         $this->assertInstanceOf(SpanInterface::class, $result);
     }
 
@@ -158,7 +161,7 @@ class PrismTracingServiceTest extends TestCase
             meta: new \Prism\Prism\ValueObjects\Meta('id', 'model'),
             messages: collect([])
         );
-        $startTime = new DateTime();
+        $startTime = new DateTime;
 
         $responseDto = new PrismResponseDto(
             text: 'Response text',
@@ -185,7 +188,7 @@ class PrismTracingServiceTest extends TestCase
             ->andReturnSelf();
 
         $this->service->updateWithSuccess($span, $response, $startTime);
-        
+
         $this->assertTrue(true); // Test passes if no exception
     }
 
@@ -200,14 +203,14 @@ class PrismTracingServiceTest extends TestCase
             ->andReturnSelf();
 
         $this->service->updateWithError($span, $exception);
-        
+
         $this->assertTrue(true); // Test passes if no exception
     }
 
     public function test_start_trace_with_unknown_provider(): void
     {
         $request = Mockery::mock(\Prism\Prism\Text\Request::class);
-        
+
         $this->requestExtractor->shouldReceive('extract')
             ->andReturn(new PrismRequestDto(
                 provider: null,
@@ -234,7 +237,7 @@ class PrismTracingServiceTest extends TestCase
             ->andReturn($span);
 
         $result = $this->service->startTrace($request, 'text');
-        
+
         $this->assertSame($span, $result);
     }
 
@@ -251,7 +254,7 @@ class PrismTracingServiceTest extends TestCase
         );
 
         $request = Mockery::mock(\Prism\Prism\Text\Request::class);
-        
+
         $this->requestExtractor->shouldReceive('extract')
             ->andReturn(new PrismRequestDto(
                 provider: 'openai',
@@ -273,12 +276,12 @@ class PrismTracingServiceTest extends TestCase
         $this->langfuse->shouldReceive('startSpan')
             ->withArgs(function ($name, $type, $input, $metadata) {
                 // model_params should not be in metadata when disabled
-                return !isset($metadata['model_params']);
+                return ! isset($metadata['model_params']);
             })
             ->andReturn($span);
 
         $result = $service->startTrace($request, 'text');
-        
+
         $this->assertSame($span, $result);
     }
 }

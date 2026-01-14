@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Langfuse\Integration\Laravel\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Langfuse\Integration\Laravel\Events\SpanEnded;
 use Langfuse\Integration\Laravel\Events\SpanStarted;
 use Langfuse\Integration\Laravel\Events\TraceCompleted;

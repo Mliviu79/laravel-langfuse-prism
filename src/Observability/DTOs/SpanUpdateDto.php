@@ -27,8 +27,7 @@ readonly class SpanUpdateDto
         public ?array $costDetails = null,
         public ?string $promptName = null,
         public ?int $promptVersion = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

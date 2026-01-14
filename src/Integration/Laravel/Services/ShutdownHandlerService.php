@@ -13,8 +13,7 @@ class ShutdownHandlerService
 {
     public function __construct(
         private readonly LangfuseClientInterface $langfuse
-    ) {
-    }
+    ) {}
 
     /**
      * Flush all pending spans

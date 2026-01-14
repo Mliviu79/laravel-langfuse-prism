@@ -16,6 +16,5 @@ class SpanStarted
 
     public function __construct(
         public readonly SpanInterface $span
-    ) {
-    }
+    ) {}
 }

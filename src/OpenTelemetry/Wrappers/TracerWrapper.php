@@ -31,8 +31,7 @@ class TracerWrapper implements TracerInterface
         private readonly ?EventDispatcherInterface $eventDispatcher = null,
         private readonly string $instrumentationName = 'langfuse-php',
         private readonly string $instrumentationVersion = '1.0.0'
-    ) {
-    }
+    ) {}
 
     /**
      * Get the event dispatcher if one is set.

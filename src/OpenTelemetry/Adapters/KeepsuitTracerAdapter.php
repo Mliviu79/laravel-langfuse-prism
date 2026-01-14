@@ -10,13 +10,12 @@ use Langfuse\Observability\Contracts\TracerInterface;
 use Langfuse\Support\Contracts\IdGeneratorInterface;
 use Langfuse\Support\Enums\ObservationType;
 use Langfuse\Support\Enums\SpanLevel;
-use OpenTelemetry\API\Trace\SpanInterface as OtelSpanInterface;
 use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\Context\Context;
 
 /**
  * Adapter that uses Keepsuit's Laravel OpenTelemetry tracer.
- * 
+ *
  * This allows the Langfuse package to work alongside the existing
  * Keepsuit OpenTelemetry setup, using its configured exporter to
  * send traces to Langfuse.
@@ -28,8 +27,7 @@ class KeepsuitTracerAdapter implements TracerInterface
 
     public function __construct(
         private readonly IdGeneratorInterface $idGenerator,
-    ) {
-    }
+    ) {}
 
     public function getSpan(string $spanId): ?SpanInterface
     {
@@ -59,10 +57,10 @@ class KeepsuitTracerAdapter implements TracerInterface
 
         // Start the span
         $otelSpan = $spanBuilder->start();
-        
+
         // Activate the span in the current context so child spans inherit it
         $scope = $otelSpan->storeInContext(Context::getCurrent())->activate();
-        
+
         // Get the span context for trace/span IDs
         $spanContext = $otelSpan->getContext();
         $traceId = $spanContext->getTraceId();
@@ -74,7 +72,7 @@ class KeepsuitTracerAdapter implements TracerInterface
         // To find the ACTUAL parent, we would have needed to check BEFORE starting.
         // But Keepsuit handles parenting internally if we don't set it.
         // For Langfuse, we'll check if there was a valid parent BEFORE we started.
-        $isRootSpan = !$parentSpan->getContext()->isValid();
+        $isRootSpan = ! $parentSpan->getContext()->isValid();
 
         // Create our wrapper span
         $span = new KeepsuitSpanAdapter(

@@ -132,7 +132,7 @@ class LangfuseServiceProvider extends ServiceProvider
             $idGenerator = $app->make(\Langfuse\Support\Contracts\IdGeneratorInterface::class);
 
             // If tracing is disabled, return null tracer
-            if (!$config->isTracingEnabled()) {
+            if (! $config->isTracingEnabled()) {
                 return new \Langfuse\Observability\Spans\NullTracer($idGenerator);
             }
 
@@ -246,7 +246,7 @@ class LangfuseServiceProvider extends ServiceProvider
         // Check config first - using array access instead of config() helper
         // to avoid issues during early registration
         $config = $this->app->make('config');
-        if (!$config->get('langfuse.prism.auto_trace', true)) {
+        if (! $config->get('langfuse.prism.auto_trace', true)) {
             return false;
         }
 
@@ -300,7 +300,7 @@ class LangfuseServiceProvider extends ServiceProvider
         try {
             $providerClass = 'Langfuse\Integration\Prism\PrismLangfuseServiceProvider';
 
-            if (class_exists($providerClass) && !$this->app->bound($providerClass)) {
+            if (class_exists($providerClass) && ! $this->app->bound($providerClass)) {
                 $this->app->register($providerClass);
             }
         } catch (\Throwable $e) {

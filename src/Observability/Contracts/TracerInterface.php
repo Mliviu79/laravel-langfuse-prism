@@ -15,16 +15,16 @@ interface TracerInterface
     /**
      * Start a new span
      *
-     * @param string $name Span name
-     * @param ObservationType $type Observation type
-     * @param mixed $input Input data
-     * @param mixed $output Output data
-     * @param array|null $metadata Metadata
-     * @param string|null $version Version
-     * @param SpanLevel|null $level Span level
-     * @param string|null $statusMessage Status message
-     * @param string|null $parentId Parent span ID
-     * @param string|null $model Model name
+     * @param  string  $name  Span name
+     * @param  ObservationType  $type  Observation type
+     * @param  mixed  $input  Input data
+     * @param  mixed  $output  Output data
+     * @param  array|null  $metadata  Metadata
+     * @param  string|null  $version  Version
+     * @param  SpanLevel|null  $level  Span level
+     * @param  string|null  $statusMessage  Status message
+     * @param  string|null  $parentId  Parent span ID
+     * @param  string|null  $model  Model name
      * @return SpanInterface Created span
      */
     public function startSpan(

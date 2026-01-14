@@ -12,7 +12,7 @@ use Langfuse\OpenTelemetry\DTOs\OpenTelemetryConfigDto;
 readonly class StatusReportDto
 {
     /**
-     * @param string[] $warnings
+     * @param  string[]  $warnings
      */
     public function __construct(
         public bool $tracingEnabled,
@@ -24,8 +24,7 @@ readonly class StatusReportDto
         public string $phpSapi,
         public bool $runningInConsole,
         public array $warnings = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Check if credentials are fully configured.

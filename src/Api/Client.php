@@ -19,8 +19,7 @@ class Client implements ApiClientInterface
         private readonly HttpRequestService $httpRequestService,
         private readonly ResponseHandlerService $responseHandlerService,
         private readonly DataSanitizationService $sanitizationService
-    ) {
-    }
+    ) {}
 
     public function batch(array $events): array
     {
@@ -37,7 +36,7 @@ class Client implements ApiClientInterface
             // Derive envelope id and timestamp
             $envelopeId = $event['id'] ?? ($body['id'] ?? (string) Str::uuid());
             $timestamp = $event['timestamp']
-                ?? ($body['endTime'] ?? ($body['startTime'] ?? (new \DateTime())->format('c')));
+                ?? ($body['endTime'] ?? ($body['startTime'] ?? (new \DateTime)->format('c')));
 
             return [
                 'id' => $envelopeId,

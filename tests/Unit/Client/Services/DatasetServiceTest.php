@@ -17,16 +17,18 @@ use PHPUnit\Framework\TestCase;
 class DatasetServiceTest extends TestCase
 {
     private MockInterface $apiClient;
+
     private MockInterface $idGenerator;
+
     private DatasetService $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->apiClient = Mockery::mock(ApiClientInterface::class);
         $this->idGenerator = Mockery::mock(IdGeneratorInterface::class);
-        
+
         $this->service = new DatasetService($this->apiClient, $this->idGenerator);
     }
 
@@ -65,7 +67,7 @@ class DatasetServiceTest extends TestCase
         $this->apiClient->shouldReceive('createDataset')
             ->once()
             ->andReturn([]); // No ID returned
-        
+
         $this->idGenerator->shouldReceive('generateId')
             ->once()
             ->andReturn('generated-id');
@@ -139,9 +141,9 @@ class DatasetServiceTest extends TestCase
         $this->apiClient->shouldReceive('createDatasetItem')
             ->once()
             ->with(Mockery::on(function ($data) {
-                return !array_key_exists('expectedOutput', $data)
-                    && !array_key_exists('sourceTraceId', $data)
-                    && !array_key_exists('sourceObservationId', $data);
+                return ! array_key_exists('expectedOutput', $data)
+                    && ! array_key_exists('sourceTraceId', $data)
+                    && ! array_key_exists('sourceObservationId', $data);
             }))
             ->andReturn(['id' => 'item-123', 'datasetId' => 'ds-1']);
 
@@ -183,7 +185,7 @@ class DatasetServiceTest extends TestCase
         $this->apiClient->shouldReceive('createDatasetRun')
             ->once()
             ->andReturn(['id' => 'run-123', 'datasetId' => 'ds-1']);
-        
+
         $this->idGenerator->shouldReceive('generateTimestamp')
             ->once()
             ->andReturn('1705056000');

@@ -17,8 +17,7 @@ final readonly class Score
         public ?string $comment = null,
         public ?string $configId = null,
         public ?ScoreDataType $dataType = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the score data type based on the value

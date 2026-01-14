@@ -116,7 +116,7 @@ class PrismRequestExtractor implements PrismRequestExtractorInterface
     /**
      * Combine multiple system prompts into a single string.
      *
-     * @param SystemMessage[] $systemPrompts
+     * @param  SystemMessage[]  $systemPrompts
      */
     private function combineSystemPrompts(array $systemPrompts): string
     {

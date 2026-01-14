@@ -47,7 +47,7 @@ class LangfuseStatusCommand extends Command
         $this->components->twoColumnDetail('Environment', $report->environment);
         $this->components->twoColumnDetail(
             'Sample Rate',
-            $report->getSampleRatePercentage() . '%'
+            $report->getSampleRatePercentage().'%'
         );
 
         $this->newLine();
@@ -78,11 +78,11 @@ class LangfuseStatusCommand extends Command
             $report->runningInConsole ? '✓ Yes' : '✗ No'
         );
 
-        if (!$otelConfig->useSimpleProcessor) {
+        if (! $otelConfig->useSimpleProcessor) {
             $this->newLine();
             $this->components->twoColumnDetail('Max Queue Size', number_format($otelConfig->maxQueueSize));
-            $this->components->twoColumnDetail('Schedule Delay', $otelConfig->scheduledDelayMillis . 'ms');
-            $this->components->twoColumnDetail('Export Timeout', $otelConfig->exportTimeoutMillis . 'ms');
+            $this->components->twoColumnDetail('Schedule Delay', $otelConfig->scheduledDelayMillis.'ms');
+            $this->components->twoColumnDetail('Export Timeout', $otelConfig->exportTimeoutMillis.'ms');
             $this->components->twoColumnDetail('Max Batch Size', number_format($otelConfig->maxExportBatchSize));
         }
 
@@ -116,7 +116,7 @@ class LangfuseStatusCommand extends Command
 
     private function displayWarnings(StatusReportDto $report): void
     {
-        if (!$report->hasWarnings()) {
+        if (! $report->hasWarnings()) {
             return;
         }
 

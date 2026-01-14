@@ -22,8 +22,8 @@ class NullTracerTest extends TestCase
 
     public function test_start_span_returns_null_span(): void
     {
-        $tracer = new NullTracer();
-        
+        $tracer = new NullTracer;
+
         $span = $tracer->startSpan('test-span');
 
         $this->assertInstanceOf(NullSpan::class, $span);
@@ -31,8 +31,8 @@ class NullTracerTest extends TestCase
 
     public function test_start_span_with_all_parameters_returns_null_span(): void
     {
-        $tracer = new NullTracer();
-        
+        $tracer = new NullTracer;
+
         $span = $tracer->startSpan(
             name: 'test-span',
             type: ObservationType::GENERATION,
@@ -51,8 +51,8 @@ class NullTracerTest extends TestCase
 
     public function test_get_span_returns_null(): void
     {
-        $tracer = new NullTracer();
-        
+        $tracer = new NullTracer;
+
         $result = $tracer->getSpan('any-span-id');
 
         $this->assertNull($result);
@@ -60,8 +60,8 @@ class NullTracerTest extends TestCase
 
     public function test_remove_span_does_nothing(): void
     {
-        $tracer = new NullTracer();
-        
+        $tracer = new NullTracer;
+
         // Should not throw any exception
         $tracer->removeSpan('any-span-id');
 
@@ -70,8 +70,8 @@ class NullTracerTest extends TestCase
 
     public function test_flush_does_nothing(): void
     {
-        $tracer = new NullTracer();
-        
+        $tracer = new NullTracer;
+
         // Should not throw any exception
         $tracer->flush();
 
@@ -80,8 +80,8 @@ class NullTracerTest extends TestCase
 
     public function test_shutdown_does_nothing(): void
     {
-        $tracer = new NullTracer();
-        
+        $tracer = new NullTracer;
+
         // Should not throw any exception
         $tracer->shutdown();
 
@@ -97,7 +97,7 @@ class NullTracerTest extends TestCase
 
         $tracer = new NullTracer($idGenerator);
         $span = $tracer->startSpan('test');
-        
+
         // The span should have the id generator
         $score = $span->score('test', 1.0);
         $this->assertEquals('generated-id', $score->id);

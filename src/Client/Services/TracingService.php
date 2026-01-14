@@ -19,8 +19,7 @@ class TracingService
         private readonly Configuration $config,
         private readonly TracerInterface $tracer,
         private readonly \Langfuse\Support\Contracts\IdGeneratorInterface $idGenerator,
-    ) {
-    }
+    ) {}
 
     /**
      * Start a new span
@@ -37,11 +36,11 @@ class TracingService
         ?string $parentId = null,
         ?string $model = null,
     ): SpanInterface {
-        if (!$this->config->isTracingEnabled()) {
+        if (! $this->config->isTracingEnabled()) {
             return new \Langfuse\Observability\Spans\NullSpan($this->idGenerator);
         }
 
-        if (!$this->config->shouldSample()) {
+        if (! $this->config->shouldSample()) {
             return new \Langfuse\Observability\Spans\NullSpan($this->idGenerator);
         }
 

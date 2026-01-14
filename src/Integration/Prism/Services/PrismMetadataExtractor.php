@@ -98,6 +98,7 @@ class PrismMetadataExtractor
             $composerPath = base_path('vendor/prism-php/prism/composer.json');
             if (file_exists($composerPath)) {
                 $composer = json_decode(file_get_contents($composerPath), true);
+
                 return $composer['version'] ?? 'unknown';
             }
 

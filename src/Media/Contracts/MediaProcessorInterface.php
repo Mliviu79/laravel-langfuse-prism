@@ -16,8 +16,8 @@ interface MediaProcessorInterface
     /**
      * Process media content and return metadata
      *
-     * @param mixed $content The media content (string, resource, etc.)
-     * @param MediaContentType $contentType The content type
+     * @param  mixed  $content  The media content (string, resource, etc.)
+     * @param  MediaContentType  $contentType  The content type
      * @return array Processed media metadata including URL, dimensions, etc.
      */
     public function process(mixed $content, MediaContentType $contentType): array;

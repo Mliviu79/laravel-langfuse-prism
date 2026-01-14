@@ -20,8 +20,7 @@ class LaravelEventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private readonly Dispatcher $events
-    ) {
-    }
+    ) {}
 
     public function dispatchSpanStarted(SpanInterface $span): void
     {

@@ -19,7 +19,7 @@ class AudioProcessor implements MediaProcessorInterface
 
     public function process(mixed $content, MediaContentType $contentType): array
     {
-        if (!is_string($content)) {
+        if (! is_string($content)) {
             throw new \InvalidArgumentException('Audio content must be a string');
         }
 
@@ -104,7 +104,7 @@ class AudioProcessor implements MediaProcessorInterface
 
         // Check for ID3 tags
         $id3Info = $this->extractId3Tags($content);
-        if (!empty($id3Info)) {
+        if (! empty($id3Info)) {
             $info['id3'] = $id3Info;
         }
 
@@ -119,7 +119,7 @@ class AudioProcessor implements MediaProcessorInterface
         $info = [];
 
         // Check RIFF header
-        if (!str_starts_with($content, 'RIFF')) {
+        if (! str_starts_with($content, 'RIFF')) {
             return ['validWav' => false];
         }
 

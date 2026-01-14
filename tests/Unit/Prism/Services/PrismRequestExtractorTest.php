@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for PrismRequestExtractor.
- * 
+ *
  * Note: Due to how the extractor uses instanceof checks, we test the DTO
  * construction rather than the full extraction logic, which requires
  * real Prism request objects.
@@ -22,12 +22,12 @@ class PrismRequestExtractorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->extractor = new PrismRequestExtractor();
+        $this->extractor = new PrismRequestExtractor;
     }
 
     public function test_extractor_can_be_instantiated(): void
     {
-        $extractor = new PrismRequestExtractor();
+        $extractor = new PrismRequestExtractor;
         $this->assertInstanceOf(PrismRequestExtractor::class, $extractor);
     }
 

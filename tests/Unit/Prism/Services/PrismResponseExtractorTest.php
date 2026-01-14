@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for PrismResponseExtractor.
- * 
+ *
  * Note: Due to how the extractor uses instanceof checks, we test the DTO
  * construction rather than the full extraction logic, which requires
  * real Prism response objects.
@@ -25,12 +25,12 @@ class PrismResponseExtractorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->extractor = new PrismResponseExtractor();
+        $this->extractor = new PrismResponseExtractor;
     }
 
     public function test_extractor_can_be_instantiated(): void
     {
-        $extractor = new PrismResponseExtractor();
+        $extractor = new PrismResponseExtractor;
         $this->assertInstanceOf(PrismResponseExtractor::class, $extractor);
     }
 
@@ -56,7 +56,7 @@ class PrismResponseExtractorTest extends TestCase
             usage: $usage,
             cost: $cost,
             metadata: ['model' => 'gpt-4', 'finish_reason' => 'stop'],
-            completionStartTime: new DateTime(),
+            completionStartTime: new DateTime,
             responseTime: 1.5,
             additionalOutput: ['tool_calls' => []],
         );

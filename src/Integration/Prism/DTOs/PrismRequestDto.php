@@ -21,8 +21,7 @@ readonly class PrismRequestDto
         public ?array $userData = null,
         public ?string $promptName = null,
         public ?int $promptVersion = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

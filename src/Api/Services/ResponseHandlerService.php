@@ -17,8 +17,7 @@ class ResponseHandlerService
     public function __construct(
         private readonly Configuration $config,
         private readonly DataSanitizationService $sanitizationService
-    ) {
-    }
+    ) {}
 
     /**
      * Handle HTTP response and convert to array or throw exception
@@ -37,7 +36,7 @@ class ResponseHandlerService
             ]);
         }
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             $message = $this->extractErrorMessage($response);
 
             throw ApiException::fromHttpResponse(

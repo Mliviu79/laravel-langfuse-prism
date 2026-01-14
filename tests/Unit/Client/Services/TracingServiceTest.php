@@ -19,24 +19,27 @@ use PHPUnit\Framework\TestCase;
 class TracingServiceTest extends TestCase
 {
     private MockInterface $tracer;
+
     private MockInterface $idGenerator;
+
     private Configuration $enabledConfig;
+
     private Configuration $disabledConfig;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->tracer = Mockery::mock(TracerInterface::class);
         $this->idGenerator = Mockery::mock(IdGeneratorInterface::class);
-        
+
         $this->enabledConfig = new Configuration(
             publicKey: 'test-key',
             secretKey: 'test-secret',
             tracingEnabled: true,
             sampleRate: 1.0
         );
-        
+
         $this->disabledConfig = Configuration::fromLaravelConfig([
             'public_key' => '',
             'secret_key' => '',
@@ -86,7 +89,7 @@ class TracingServiceTest extends TestCase
     public function test_start_span_delegates_to_tracer_when_enabled(): void
     {
         $expectedSpan = Mockery::mock(SpanInterface::class);
-        
+
         $this->tracer->shouldReceive('startSpan')
             ->once()
             ->with(
@@ -120,7 +123,7 @@ class TracingServiceTest extends TestCase
         $metadata = ['key' => 'value'];
         $input = ['prompt' => 'test'];
         $output = ['response' => 'test'];
-        
+
         $this->tracer->shouldReceive('startSpan')
             ->once()
             ->withArgs(function (
@@ -181,7 +184,7 @@ class TracingServiceTest extends TestCase
         );
 
         $service->flush();
-        
+
         $this->assertTrue(true); // Verify no exception
     }
 
@@ -196,7 +199,7 @@ class TracingServiceTest extends TestCase
         );
 
         $service->shutdown();
-        
+
         $this->assertTrue(true); // Verify no exception
     }
 }

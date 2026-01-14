@@ -23,8 +23,7 @@ readonly class OpenTelemetryConfigDto
         public string $serviceVersion,
         public array $resourceAttributes,
         public bool $useSimpleProcessor,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array

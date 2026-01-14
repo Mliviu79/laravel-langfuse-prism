@@ -19,11 +19,11 @@ class SpanExporterFactory implements SpanExporterFactoryInterface
 {
     public function create(OpenTelemetryConfigDto $config, ?LoggerInterface $logger = null): SpanExporterInterface
     {
-        $logger = $logger ?? new NullLogger();
+        $logger = $logger ?? new NullLogger;
 
         // Ensure endpoint includes the traces path
         $endpoint = rtrim($config->endpoint, '/');
-        if (!str_ends_with($endpoint, '/v1/traces')) {
+        if (! str_ends_with($endpoint, '/v1/traces')) {
             $endpoint .= '/v1/traces';
         }
 

@@ -61,7 +61,7 @@ final readonly class Configuration
         // IMPORTANT: Determine tracingEnabled FIRST before any validation
         // This allows the config to be created even without API keys when tracing is disabled
         $this->tracingEnabled = $tracingEnabled ?? $this->getBoolEnvValue('LANGFUSE_TRACING_ENABLED', true);
-        
+
         // Assign all other values
         $this->publicKey = $publicKey ?? $this->getEnvValue('LANGFUSE_PUBLIC_KEY', '');
         $this->secretKey = $secretKey ?? $this->getEnvValue('LANGFUSE_SECRET_KEY', '');
@@ -75,12 +75,12 @@ final readonly class Configuration
         $this->additionalHeaders = $additionalHeaders ?? [];
         $this->blockedInstrumentationScopes = $blockedInstrumentationScopes ?? [];
         $this->otelEndpoint = $otelEndpoint ?? $this->getEnvValue('LANGFUSE_OTEL_ENDPOINT', $this->host.'/api/public/otel');
-        $this->otelProtocol = $otelProtocol ?? $this->getEnvValue('LANGFUSE_OTEL_PROTOCOL', 
+        $this->otelProtocol = $otelProtocol ?? $this->getEnvValue('LANGFUSE_OTEL_PROTOCOL',
             $this->getEnvValue('OTEL_EXPORTER_OTLP_PROTOCOL', 'http/json'));
-        
+
         // Auto-detect if using a collector (endpoint doesn't point to Langfuse host)
-        $this->otelUseCollector = $otelUseCollector ?? $this->getBoolEnvValue('LANGFUSE_OTEL_USE_COLLECTOR', 
-            !str_contains($this->otelEndpoint, $this->host));
+        $this->otelUseCollector = $otelUseCollector ?? $this->getBoolEnvValue('LANGFUSE_OTEL_USE_COLLECTOR',
+            ! str_contains($this->otelEndpoint, $this->host));
 
         // Parse OTEL headers from environment variable or use provided array
         $this->otelHeaders = $otelHeaders ?? $this->parseOtelHeaders();

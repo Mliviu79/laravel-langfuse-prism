@@ -145,7 +145,7 @@ return [
     |
     */
     'otel_enabled' => env('LANGFUSE_OTEL_ENABLED', true),
-    'otel_endpoint' => env('LANGFUSE_OTEL_ENDPOINT', env('LANGFUSE_HOST', 'https://cloud.langfuse.com') . '/api/public/otel'),
+    'otel_endpoint' => env('LANGFUSE_OTEL_ENDPOINT', env('LANGFUSE_HOST', 'https://cloud.langfuse.com').'/api/public/otel'),
     'otel_protocol' => env('LANGFUSE_OTEL_PROTOCOL', env('OTEL_EXPORTER_OTLP_PROTOCOL', 'http/json')),
 
     /*

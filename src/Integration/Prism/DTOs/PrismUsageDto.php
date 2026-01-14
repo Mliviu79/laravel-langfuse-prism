@@ -14,8 +14,7 @@ readonly class PrismUsageDto
         public int $completionTokens = 0,
         public int $totalTokens = 0,
         public ?int $thoughtTokens = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array
