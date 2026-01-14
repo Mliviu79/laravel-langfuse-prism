@@ -12,6 +12,9 @@ parameters:
         - tests/Integration/PrismIntegrationTest.php
         - tests/Unit/Prism/*
     ignoreErrors:
+        - '#Trait Langfuse\\Support\\Traits\\GeneratesIds is used zero times#'
+        - '#Property Langfuse\\Client\\LangfuseClient::\$config is never read, only written.#'
+        - '#Property Langfuse\\Client\\LangfuseClient::\$apiClient is never read, only written.#'
         - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true will always evaluate to true.#'
         - '#Property Langfuse\\Tests\\.* is never read, only written.#'
         - '#Call to method PHPUnit\\Framework\\Assert::assertNotNull\(\) with .* will always evaluate to true.#'
