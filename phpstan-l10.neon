@@ -1,0 +1,18 @@
+includes:
+    - vendor/phpstan/phpstan-mockery/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+        - config
+        - tests
+    excludePaths:
+        - src/Integration/Prism/*
+        - tests/Integration/PrismIntegrationTest.php
+        - tests/Unit/Prism/*
+    ignoreErrors:
+        - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true will always evaluate to true.#'
+        - '#Property Langfuse\\Tests\\.* is never read, only written.#'
+        - '#Method .* is unused.#'
+        - '#Call to method PHPUnit\\Framework\\Assert::assertNotNull\(\) with .* will always evaluate to true.#'
