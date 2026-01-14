@@ -147,6 +147,11 @@ class PrismTracingServiceTest extends TestCase
 
     public function test_update_with_success_sets_output_and_usage(): void
     {
+        // Check if Prism classes exist before proceeding
+        if (!class_exists(\Prism\Prism\Text\Response::class)) {
+            $this->markTestSkipped('Prism package not installed');
+        }
+
         // Use real Response object as it is readonly and cannot be mocked by Mockery < 2.0 (or with issues)
         $response = new \Prism\Prism\Text\Response(
             steps: collect([]),
