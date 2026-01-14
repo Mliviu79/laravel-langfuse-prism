@@ -43,6 +43,11 @@ class PrismIntegrationTest extends TestCase
         
         $this->langfuse = $this->app->make(LangfuseClientInterface::class);
         
+        // Check if Prism classes exist before proceeding
+        if (!class_exists(\Prism\Prism\Text\Request::class)) {
+            $this->markTestSkipped('Prism package not installed');
+        }
+
         // Create the tracing service manually since Prism may not be installed
         $this->tracingService = new PrismTracingService(
             $this->langfuse,
