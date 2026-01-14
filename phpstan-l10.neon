@@ -14,5 +14,6 @@ parameters:
     ignoreErrors:
         - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true will always evaluate to true.#'
         - '#Property Langfuse\\Tests\\.* is never read, only written.#'
-        - '#Method .* is unused.#'
         - '#Call to method PHPUnit\\Framework\\Assert::assertNotNull\(\) with .* will always evaluate to true.#'
+        # On Laravel 10, some types are resolved as MockInterface instead of the expected interface due to missing dev dependencies
+        - '#Parameter .* expects .*, Mockery\\MockInterface given.#'
